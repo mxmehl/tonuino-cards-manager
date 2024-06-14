@@ -15,9 +15,7 @@ def generate_qr_codes(qrdata: list[str]):
     print("")
     # Make each QR code contain max. 4 elements
     maxelem = 4
-    for idx, qrlist in enumerate(
-        [qrdata[x : x + maxelem] for x in range(0, len(qrdata), maxelem)]
-    ):
+    for idx, qrlist in enumerate([qrdata[x : x + maxelem] for x in range(0, len(qrdata), maxelem)]):
         qrc = QRCode()
         qrc.add_data("\n".join(qrlist))
         print(

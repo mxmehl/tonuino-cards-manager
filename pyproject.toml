@@ -37,6 +37,7 @@ tonuino-cover-converter = 'tonuino_cards_manager.cover:main'
 types-qrcode = "^7.4.0.20240408"
 pylint = "^3.2.3"
 mypy = "^1.10.0"
+black = "^24.4.2"
 
 [build-system]
 requires = ["poetry-core"]
