@@ -5,8 +5,21 @@
 [tool.poetry]
 name = "tonuino-cards-manager"
 version = "0.1.0"
-description = ""
+description = "Manage Tonuino RFID and SD cards by one configuration file. Easy, lightweight and feature-rich"
+readme = "README.md"
 authors = ["Max Mehl <mail@mehl.mx>"]
+repository = "https://github.com/mxmehl/tonuino-cards-manager"
+keywords = ["tonuino", "management", "automation"]
+license = "GPL-3.0-only"
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+  "Intended Audience :: End Users/Desktop",
+  "Topic :: Multimedia :: Sound/Audio",
+  "Topic :: Utilities",
+]
+packages = [{ include = "tonuino_cards_manager" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
