@@ -159,7 +159,7 @@ cython_debug/
 source
 dest
 # Cover configuration, documents and templates
-*.y*ml
+/*.y*ml
 *.docx
 *.dotm
 *.odt
