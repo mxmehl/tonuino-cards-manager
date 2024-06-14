@@ -1,3 +1,9 @@
+<!--
+SPDX-FileCopyrightText: 2024 Max Mehl <https://mehl.mx>
+
+SPDX-License-Identifier: GPL-3.0-only
+-->
+
 # Tonuino Cards Manager
 
 Welcome to the **Tonuino Cards Manager**, a convenient utility designed to streamline the process of managing and organizing music for [Tonuino music boxes](https://www.voss.earth/tonuino/). This tool simplifies managing your Tonuino's SD card content and RFID cards settings.

@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Max Mehl <https://mehl.mx>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 """Dataclass holding configuration for a single card and all its operations"""
 
 import logging
