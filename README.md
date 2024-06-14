@@ -19,6 +19,7 @@ Welcome to the **Tonuino Cards Manager**, a convenient utility designed to strea
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+  - [Demo](#demo)
 - [Configuration](#configuration)
 - [Limitations](#limitations)
 - [Contributing](#contributing)
@@ -26,13 +27,13 @@ Welcome to the **Tonuino Cards Manager**, a convenient utility designed to strea
 
 ## Overview
 
-The **Tonuino Cards Manager** provides an easy way to prepare and manage music collections for your Tonuino music box. Whether you want to assign single songs or entire albums to specific RFID cards, this tool handles the setup seamlessly through a YAML configuration file.
+The **Tonuino Cards Manager** provides an easy way to prepare and manage music collections for your Tonuino music box. Whether you want to assign single songs or entire albums to specific RFID cards, this tool handles the setup seamlessly through a single YAML configuration file.
 
 ## Features
 
 - **Easy Configuration**: Use a simple YAML file to define which music plays for each RFID card.
 - **Multiple Sources**: Assign songs or albums from various sources to one RFID card.
-- **All modi**: The tool supports all playing modi, e.g. single and party mode.
+- **All modi**: The tool supports all modern playing modi, e.g. single and party mode.
 - **Automated Management**: The tool automates the copying and organizing of music files into the appropriate structure for Tonuino.
 - **QR Code Generation**: QR codes will be generated for each card which allows you to quickly configure your cards, e.g. with [TonUINO NFC Tools](https://marc136.github.io/tonuino-nfc-tools/)
 - **User-Friendly**: Intuitive and designed with simplicity in mind for managing kids' music collections.
@@ -56,7 +57,11 @@ Once installed, you can use the tool by following these steps:
    ```
 3. The tool will process the YAML file and organize your music according to the specified configuration (see below).
 
-<!-- Add demo here -->
+### Demo
+
+[![asciicast](https://asciinema.org/a/663963.svg)](https://asciinema.org/a/663963)
+
+The resulting QR code(s) can be scanned with [TonUINO NFC Tools](https://marc136.github.io/tonuino-nfc-tools/). There, you can press on "Enter list" and "Read QR code", and thereby program your RFID cards in batch.
 
 ## Configuration
 
