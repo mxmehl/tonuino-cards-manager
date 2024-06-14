@@ -4,6 +4,10 @@
 
 """Global constants"""
 
+from importlib.metadata import version
+
+__version__ = version("tonuino-cards-manager")
+
 MODES = {
     "play-random": 1,
     "album": 2,

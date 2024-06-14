@@ -7,6 +7,7 @@
 import argparse
 import logging
 
+from . import __version__
 from ._config import parse_config
 from ._qrcode import generate_qr_codes
 
@@ -19,6 +20,7 @@ parser.add_argument(
     help="The destination directory in which the data is written to",
 )
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
+parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
 
 
 def configure_logger(args) -> logging.Logger:
