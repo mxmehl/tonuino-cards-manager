@@ -5,9 +5,9 @@
 """Dataclass holding configuration for a single card and all its operations"""
 
 import logging
+import sys
 from dataclasses import dataclass, field
 from pathlib import Path
-import sys
 
 from num2words import num2words
 
