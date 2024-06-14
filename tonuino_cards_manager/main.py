@@ -8,6 +8,7 @@ import argparse
 import logging
 
 from . import __version__
+from ._clean import clean_unconfigured_dirs
 from ._config import parse_config
 from ._qrcode import generate_qr_codes
 
@@ -18,6 +19,12 @@ parser.add_argument(
     "--destination",
     required=True,
     help="The destination directory in which the data is written to",
+)
+parser.add_argument(
+    "-f",
+    "--force",
+    action="store_true",
+    help="Delete all song folders on the destination which are not configured by you",
 )
 parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output")
 parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
@@ -72,6 +79,10 @@ def main():
         )
 
         qrdata.append(f"{card_bytecode};{card.create_carddesc(cardno)}")
+
+    # Delete directories that have not been configured
+    if args.force:
+        clean_unconfigured_dirs(args.destination, config.cards)
 
     # Create QR code
     generate_qr_codes(qrdata)

@@ -53,3 +53,8 @@ def decimal_to_hex(number: int | str) -> str:
 def get_files_in_directory(directory: Path) -> list[Path]:
     """Get all files in a directory, sorted"""
     return sorted([f for f in directory.iterdir() if f.is_file()])
+
+
+def get_directories_in_directory(directory: Path) -> list[Path]:
+    """Get all directories in a directory, sorted"""
+    return sorted([f for f in directory.iterdir() if f.is_dir()])
