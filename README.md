@@ -6,6 +6,11 @@ SPDX-License-Identifier: GPL-3.0-only
 
 # Tonuino Cards Manager
 
+[![Test suites](https://github.com/mxmehl/tonuino-cards-manager/actions/workflows/test.yaml/badge.svg)](https://github.com/mxmehl/tonuino-cards-manager/actions/workflows/test.yaml)
+[![REUSE status](https://api.reuse.software/badge/github.com/mxmehl/tonuino-cards-manager)](https://api.reuse.software/info/github.com/mxmehl/tonuino-cards-manager)
+[![The latest version of Tonuino Cards Manager can be found on PyPI.](https://img.shields.io/pypi/v/tonuino-cards-manager.svg)](https://pypi.org/project/tonuino-cards-manager/)
+[![Information on what versions of Python Tonuino Cards Manager supports can be found on PyPI.](https://img.shields.io/pypi/pyversions/tonuino-cards-manager.svg)](https://pypi.org/project/tonuino-cards-manager/)
+
 Welcome to the **Tonuino Cards Manager**, a convenient utility designed to streamline the process of managing and organizing music for [Tonuino music boxes](https://www.voss.earth/tonuino/). This tool simplifies managing your Tonuino's SD card content and RFID cards settings.
 
 ## Table of Contents
@@ -119,23 +124,13 @@ The tool currently has a few limitation. Please feel free to contribute to the p
 
 ## Contributing
 
-Contributions are welcome! To contribute to the **Tonuino Cards Manager**, please follow these steps:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix:
-   ```bash
-   git checkout -b feature-or-fix-name
-   ```
-3. Make your changes and commit them with descriptive messages.
-4. Push your changes to your forked repository:
-   ```bash
-   git push origin feature-or-fix-name
-   ```
-5. Open a Pull Request on the main repository.
+Contributions are welcome! To contribute to the **Tonuino Cards Manager**, please check out the [Contribution guide](CONTRIBUTING.md).
 
 ## License
 
 This project is licensed under the GNU General Public License v3.0 (GPL-3.0-only). See the [LICENSE](LICENSE) file for details.
+
+There may be components under different, but compatible licenses and from different copyright holders. The project is [REUSE](https://reuse.software/) compliant which makes these portions transparent. You will find all used licenses in the [LICENSES](LICENSES/) directory.
 
 ---
 
