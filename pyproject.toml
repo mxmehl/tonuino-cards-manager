@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "tonuino-cards-manager"
+version = "0.1.0"
+description = ""
+authors = ["Max Mehl <mail@mehl.mx>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+mutagen = "^1.47.0"
+pyyaml = "^6.0.1"
+qrcode = "^7.4.2"
+wand = "^0.6.13"
+num2words = "^0.5.13"
+
+[tool.poetry.scripts]
+tonuino-cards-manager = 'tonuino_cards_manager.main:main'
+tonuino-cover-converter = 'tonuino_cards_manager.cover:main'
+
+[tool.poetry.group.dev.dependencies]
+types-qrcode = "^7.4.0.20240408"
+pylint = "^3.2.3"
+mypy = "^1.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+# FORMATTING settings
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 100
+
+# MYPY settings
+[tool.mypy]
+files = ["tonuino_cards_manager/*.py"]
+disable_error_code = ["import-untyped"]
