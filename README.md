@@ -57,6 +57,8 @@ Once installed, you can use the tool by following these steps:
    ```
 3. The tool will process the YAML file and organize your music according to the specified configuration (see below).
 
+Check out `tonuino-cards-manager --help` for all available options.
+
 ### Demo
 
 [![asciicast](https://asciinema.org/a/663963.svg)](https://asciinema.org/a/663963)
