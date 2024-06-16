@@ -28,8 +28,8 @@ def test_read_config_file(test_config_dir):
 
     # Good file, just defaults
     data = _read_config_file(str(test_config_dir / "ok_4cards.yaml"))
-    assert "cards" in data
     assert "version" not in data
+    assert "cards" in data
 
     # Good file, no defaults
     data = _read_config_file(str(test_config_dir / "ok_1card.yaml"))
@@ -63,7 +63,10 @@ def test_get_config(test_config_dir):
     assert config_ok1.sourcebasedir == ""
     assert config_ok1.cardcookie == "1337B347"
     assert config_ok1.version == 2
+    assert isinstance(config_ok1.cards, dict)
     assert len(config_ok1.cards) == 4
+    # Test some parts of the first card
+    assert 1 in config_ok1.cards
 
     # Config overriding defaults
     config_ok2 = get_config(str(test_config_dir / "ok_1card.yaml"))

@@ -5,16 +5,16 @@
 cards:
   # A single file
   1:
-    source: audio/01. Tester - Test Sound 01.mp3
+    source: 01. Tester - Test Sound 01.mp3
     mode: single
   # Two single files in default mode (play-random)
   2:
     source:
-      - audio/01. Tester - Test Sound 01.mp3
-      - audio/02. Tester - Test Sound 02.mp3
+      - 01. Tester - Test Sound 01.mp3
+      - 02. Tester - Test Sound 02.mp3
   # A whole directory, play one of the 10 first episodes randomly
   "3":
-    source: audio
+    source: "."
     mode: play-from-to
     from_song: 2
     to_song: 3
@@ -22,6 +22,6 @@ cards:
   4:
     description: Favourite songs of the last few weeks
     source:
-      - audio/02. Tester - Test Sound 02.mp3
-      - audio/subdir_audio
+      - 02. Tester - Test Sound 02.mp3
+      - subdir_audio
     mode: party
