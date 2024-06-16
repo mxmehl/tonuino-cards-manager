@@ -37,12 +37,12 @@ def test_sanitize_filename():
         assert _sanitize_filename(filename) == expected
 
 
-def test_copy_to_sdcard_with_tags(temp_dir, test_data_dir):
+def test_copy_to_sdcard_with_tags(temp_dir, test_audio_dir):
     """
     Test copying an MP3 file with ID3 tags to the destination directory.
     """
-    mp3file_1 = test_data_dir / "01. Tester - Test Sound 01.mp3"
-    mp3file_2 = test_data_dir / "02. Tester - Test Sound 02.mp3"
+    mp3file_1 = test_audio_dir / "01. Tester - Test Sound 01.mp3"
+    mp3file_2 = test_audio_dir / "02. Tester - Test Sound 02.mp3"
 
     copy_to_sdcard(0, mp3file_1, temp_dir)
     copy_to_sdcard(1, mp3file_2, temp_dir)
@@ -52,11 +52,11 @@ def test_copy_to_sdcard_with_tags(temp_dir, test_data_dir):
     assert os.path.exists(temp_dir / "002-Tester-Test_Sound_02.mp3")
 
 
-def test_copy_to_sdcard_without_tags(temp_dir, test_data_dir):
+def test_copy_to_sdcard_without_tags(temp_dir, test_audio_dir):
     """
     Test copying an MP3 file without ID3 tags to the destination directory.
     """
-    mp3file = test_data_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
+    mp3file = test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
 
     copy_to_sdcard(2, mp3file, temp_dir)
 
@@ -104,33 +104,33 @@ def test_decimal_to_hex():
         assert decimal_to_hex(number) == expected
 
 
-def test_get_files_in_directory_all(test_data_dir):
+def test_get_files_in_directory_all(test_audio_dir):
     """
     Test the get_files_in_directory function on files and directories
     """
     expected_files = [
-        test_data_dir / "00. not a music file.txt",
-        test_data_dir / "01. Tester - Test Sound 01.mp3",
-        test_data_dir / "02. Tester - Test Sound 02.mp3",
-        test_data_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
+        test_audio_dir / "00. not a music file.txt",
+        test_audio_dir / "01. Tester - Test Sound 01.mp3",
+        test_audio_dir / "02. Tester - Test Sound 02.mp3",
+        test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
     ]
 
     # Expected list should be sorted
-    assert get_files_in_directory(test_data_dir) == sorted(expected_files)
+    assert get_files_in_directory(test_audio_dir) == sorted(expected_files)
 
 
-def test_get_files_in_directory_audio(test_data_dir):
+def test_get_files_in_directory_audio(test_audio_dir):
     """
     Test the get_files_in_directory function on files and directories, filter non-audio files
     """
     expected_files = [
-        test_data_dir / "01. Tester - Test Sound 01.mp3",
-        test_data_dir / "02. Tester - Test Sound 02.mp3",
-        test_data_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
+        test_audio_dir / "01. Tester - Test Sound 01.mp3",
+        test_audio_dir / "02. Tester - Test Sound 02.mp3",
+        test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
     ]
 
     # Expected list should be sorted
-    assert get_files_in_directory(test_data_dir, audio_only=True) == sorted(expected_files)
+    assert get_files_in_directory(test_audio_dir, audio_only=True) == sorted(expected_files)
 
 
 def test_get_files_in_empty_directory(temp_dir):

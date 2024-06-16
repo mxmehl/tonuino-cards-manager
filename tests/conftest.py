@@ -12,8 +12,8 @@ def temp_dir(tmp_path):
 
 
 @pytest.fixture
-def test_data_dir():
+def test_audio_dir():
     """
     Fixture to provide the path to the test data directory.
     """
-    return Path(__file__).parent / "data"
+    return Path(__file__).parent / "data" / "audio"
