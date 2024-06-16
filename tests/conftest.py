@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2024 Max Mehl <https://mehl.mx>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
 """Pytest fixtures"""
 
 from pathlib import Path
@@ -49,6 +53,7 @@ def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
     for i in range(1, 4):
         cardcfg[i].no = i
     return cardcfg
+
 
 @pytest.fixture
 def cards_faulty(test_config_dir):  # pylint: disable=redefined-outer-name

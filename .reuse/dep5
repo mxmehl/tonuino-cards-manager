@@ -1,0 +1,8 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: Tonuino Cards Manager
+Upstream-Contact: Max Mehl
+Source: https://github.com/mxmehl/tonuino-cards-manager
+
+Files: tests/data/*
+Copyright: 2024 Max Mehl <https://mehl.mx>
+License: CC0-1.0
