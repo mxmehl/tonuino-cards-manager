@@ -40,11 +40,19 @@ def config(test_config_dir):  # pylint: disable=redefined-outer-name
 
 
 @pytest.fixture
-def cards(test_config_dir):  # pylint: disable=redefined-outer-name
+def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
     """
-    Fixture providing the the cards from the config.
+    Fixture providing well configured cards from the config.
     """
     cardcfg = get_config(str(test_config_dir / "ok_4cards.yaml")).cards
+    # Extending the number (cardno) value
     for i in range(1, 4):
         cardcfg[i].no = i
     return cardcfg
+
+@pytest.fixture
+def cards_faulty(test_config_dir):  # pylint: disable=redefined-outer-name
+    """
+    Fixture providing badly configured cards from the config.
+    """
+    return get_config(str(test_config_dir / "error_faulty_cards.yaml")).cards

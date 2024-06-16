@@ -1,0 +1,25 @@
+cards:
+  # Mode does not exist
+  1:
+    source: 01. Tester - Test Sound 01.mp3
+    mode: non-existent
+  # from-to mode without from_song and to_song
+  2:
+    source: "."
+    mode: play-from-to
+    to_song: 3
+  # None source
+  3:
+    source:
+  # Empty string source
+  4:
+    source: ""
+  # Empty list entry in source
+  5:
+    source:
+      - 01. Tester - Test Sound 01.mp3
+      - ""
+      - 02. Tester - Test Sound 02.mp3"
+  # Non-existent source
+  6:
+    source: "/this/path/does/not/exist1337"
