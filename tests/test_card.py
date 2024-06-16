@@ -159,6 +159,15 @@ def test_process_card(temp_dir, test_audio_dir, cards_ok):
     assert os.path.exists(temp_dir / "03" / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
 
 
+def test_process_card_too_many_source_files(temp_dir, cards_faulty, test_audio_dir, caplog):
+    """Test the process_card method"""
+    cards_faulty[7].parse_sources(test_audio_dir)
+    with caplog.at_level(logging.WARNING):
+        cards_faulty[7].check_too_many_files()
+
+    assert "is handling more than 255 files (285). This will not work" in caplog.text
+
+
 def test_process_card_existing_file(temp_dir, test_audio_dir, cards_ok):
     """Test the process_card method, with a file already existing at destination"""
     # Create file at the destination directory, and a sibling directory

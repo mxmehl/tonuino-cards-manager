@@ -121,6 +121,15 @@ class Card:  # pylint: disable=too-many-instance-attributes
                     )
                     continue
 
+    def check_too_many_files(self):
+        """Check whether sources contain too many files (>255)"""
+        if len(self.sourcefiles) > 255:
+            logging.warning(
+                "This card and therefore a directory on the SD card is handling "
+                "more than 255 files (%s). This will not work in typical Tonuino MP3 players!",
+                len(self.sourcefiles),
+            )
+
     def process_card(self, destination: str, sourcebasepath: str) -> None:
         """Process a card with its configuration, also copying files. Return processed sources"""
 
@@ -135,6 +144,9 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
         # Parse provided sources for this card, get list of all single MP3 files
         self.parse_sources(sourcebasepath)
+
+        # Run checks
+        self.check_too_many_files()
 
         # Iterate through all files
         for idx, mp3 in enumerate(self.sourcefiles):

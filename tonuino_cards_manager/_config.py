@@ -25,7 +25,8 @@ class Config:
     cards: dict[int, Card] = field(default_factory=dict)
 
     def _import_cards(self, cards: dict[str | int, dict]):
-        """Import the cards data from dict to DC"""
+        """Import the cards data from dict to DC, and check for a number of
+        potential issues"""
         # Check if card keys are numeric
         for key in cards:
             if isinstance(key, str) and key.isnumeric():
@@ -53,6 +54,14 @@ class Config:
                 cardamount,
             )
             sys.exit(1)
+
+        # Check if more than 99 cards
+        if len(self.cards) > 99:
+            logging.warning(
+                "You have defined more than 99 cards (%s). "
+                "This will not work in typical Tonuino MP3 players!",
+                len(self.cards),
+            )
 
     def import_config(self, data: dict):
         """Import the YAML data, overriding the defaults if present"""
