@@ -35,7 +35,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
     extra2: int = 0
     sourcefiles: list[Path] = field(default_factory=list)
 
-    def import_card(self, data: dict):
+    def import_dict_to_card(self, data: dict):
         """Import the config dict for a card as DC"""
         for key in ("description", "source", "mode", "from_song", "to_song"):
             if key in data:

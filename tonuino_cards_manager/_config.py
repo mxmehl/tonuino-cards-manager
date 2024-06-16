@@ -39,7 +39,7 @@ class Config:
         # Import card data, add to dict with int identifier and card config DC
         for cardno, carddata in cards.items():
             carddc = Card()
-            carddc.import_card(carddata)
+            carddc.import_dict_to_card(carddata)
             self.cards[int(cardno)] = carddc
 
         # Check if card keys are numbered consecutively
@@ -76,7 +76,7 @@ class Config:
 
 
 def _read_config_file(file: str) -> dict:
-    """Read config file and detect typical errors"""
+    """Read config file and detect if cards are defined"""
     with open(file, "r", encoding="UTF-8") as yamlfile:
         data = yaml.safe_load(yamlfile)
 
