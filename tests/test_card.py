@@ -50,7 +50,9 @@ def test_create_carddesc(cards_ok, test_audio_dir):
 
     # Test with parsed sources
     cards_ok[1].parse_sources(test_audio_dir)
-    assert cards_ok[1].create_carddesc(1) == "Card no. 1 (01. Tester - Test Sound 01.mp3... (1 files)"
+    assert (
+        cards_ok[1].create_carddesc(1) == "Card no. 1 (01. Tester - Test Sound 01.mp3... (1 files)"
+    )
 
     # Test with preset description
     cards_ok[4].parse_sources(test_audio_dir)

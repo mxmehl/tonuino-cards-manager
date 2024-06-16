@@ -36,7 +36,6 @@ jobs:
       - name: Execute tonuino-cards-manager
         run: poetry run tonuino-cards-manager --help
 
-
   # Test building the package and installing it via pip3
   test-build-install:
     runs-on: ubuntu-22.04
@@ -56,6 +55,16 @@ jobs:
         run: |
           tonuino-cards-manager --version
           tonuino-cards-manager --help
+
+  pytest:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/poetrybuild
+      - name: Test with pytest
+        run: |
+          poetry run pytest
+          poetry run coverage report
 
   # Formatting
   pylint:
