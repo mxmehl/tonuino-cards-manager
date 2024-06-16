@@ -1,0 +1,7 @@
+sourcebasedir:
+
+cards:
+  # A single file
+  1:
+    source: audio/01. Tester - Test Sound 01.mp3
+    mode: single

@@ -85,7 +85,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
                     "This card will not work as expected!"
                 )
 
-    def _parse_sources(self, sourcebasepath: str) -> None:
+    def parse_sources(self, sourcebasepath: str) -> None:
         """Parse sources, which can be one or multiple directories or single files"""
         # List holding the effective Path objects of each MP3 file in the sources
 
@@ -110,7 +110,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
                 if source.is_dir():
                     logging.debug("%s has been detected as a directory", source)
-                    self.sourcefiles.extend(get_files_in_directory(source))
+                    self.sourcefiles.extend(get_files_in_directory(source, audio_only=True))
                 elif source.is_file():
                     logging.debug("%s has been detected as a file", source)
                     self.sourcefiles.append(source)
@@ -134,7 +134,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
             dirfile.unlink(missing_ok=True)
 
         # Parse provided sources for this card, get list of all single MP3 files
-        self._parse_sources(sourcebasepath)
+        self.parse_sources(sourcebasepath)
 
         # Iterate through all files
         for idx, mp3 in enumerate(self.sourcefiles):

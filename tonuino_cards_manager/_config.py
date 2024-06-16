@@ -75,8 +75,8 @@ class Config:
         self._import_cards(data.get("cards", {}))
 
 
-def parse_config(file: str) -> Config:
-    """Parse config file and detect typical errors"""
+def _read_config_file(file: str) -> dict:
+    """Read config file and detect typical errors"""
     with open(file, "r", encoding="UTF-8") as yamlfile:
         data = yaml.safe_load(yamlfile)
 
@@ -85,8 +85,19 @@ def parse_config(file: str) -> Config:
         logging.critical("Mandatory configuration(s) missing in file %s: %s", file, "cards")
         sys.exit(1)
 
+    return data
+
+
+def _load_config_dict(data: dict) -> Config:
+    """Load the read YAML file as a Config object"""
     config = Config()
     config.import_config(data)
 
     logging.debug("Configuration loaded as dataclass: %s", config)
     return config
+
+
+def get_config(file: str) -> Config:
+    """Read config and return Config object"""
+    data = _read_config_file(file)
+    return _load_config_dict(data)

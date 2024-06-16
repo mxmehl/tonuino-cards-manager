@@ -1,0 +1,7 @@
+cards:
+  1:
+    source: "foobar"
+    mode: "single"
+  3:
+    source: "foobar"
+    mode: "single"

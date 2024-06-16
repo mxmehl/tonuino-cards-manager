@@ -1,0 +1,27 @@
+# sourcebasedir: ""
+# cardcookie: "1337B347"
+# version: 2
+
+cards:
+  # A single file
+  1:
+    source: 01. Tester - Test Sound 01.mp3
+    mode: single
+  # Two single files in default mode (play-random)
+  2:
+    source:
+      - 01. Tester - Test Sound 01.mp3
+      - 02. Tester - Test Sound 02.mp3
+  # A whole directory, play one of the 10 first episodes randomly
+  "3":
+    source: "."
+    mode: play-from-to
+    from_song: 2
+    to_song: 3
+  # Multiple single songs and a whole directory in party mode
+  4:
+    description: Favourite songs of the last few weeks
+    source:
+      - 02. Tester - Test Sound 02.mp3
+      - subdir_audio
+    mode: party

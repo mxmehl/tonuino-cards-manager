@@ -50,9 +50,16 @@ def decimal_to_hex(number: int | str) -> str:
     return f"{int(number):02x}"
 
 
-def get_files_in_directory(directory: Path) -> list[Path]:
-    """Get all files in a directory, sorted"""
-    return sorted([f for f in directory.iterdir() if f.is_file()])
+def get_files_in_directory(directory: Path, audio_only: bool = False) -> list[Path]:
+    """Get all files in a directory, sorted. Optionally only display music files"""
+    audioexts = (".mp3", ".opus", ".ogg")
+    allfiles = [f for f in directory.iterdir() if f.is_file()]
+
+    # Only return files with audio file extension
+    if audio_only:
+        return sorted([f for f in allfiles if f.suffix in audioexts])
+
+    return sorted(allfiles)
 
 
 def get_directories_in_directory(directory: Path) -> list[Path]:
