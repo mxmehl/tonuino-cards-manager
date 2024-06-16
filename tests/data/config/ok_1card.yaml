@@ -1,0 +1,9 @@
+sourcebasedir: "/foo/bar"
+cardcookie: "DEADBEEF"
+version: 1
+
+cards:
+  # A single file
+  1:
+    source: audio/01. Tester - Test Sound 01.mp3
+    mode: single

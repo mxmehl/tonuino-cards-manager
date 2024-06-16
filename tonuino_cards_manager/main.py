@@ -9,7 +9,7 @@ import logging
 
 from . import __version__
 from ._clean import clean_unconfigured_dirs
-from ._config import parse_config
+from ._config import get_config
 from ._qrcode import generate_qr_codes
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -50,7 +50,7 @@ def main():
     configure_logger(args=args)
 
     # Read YAML file
-    config = parse_config(args.config)
+    config = get_config(args.config)
 
     qrdata = []
 
