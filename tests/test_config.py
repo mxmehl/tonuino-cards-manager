@@ -115,3 +115,14 @@ def test_import_cards_non_consecutive(test_config_dir, caplog):
             get_config(str(test_config_dir / "error_non_consecutive.yaml"))
 
     assert "The 2 cards don't seem to be numbered consecutively" in caplog.text
+
+
+def test_import_cards_too_many(test_config_dir, caplog):
+    """
+    Test a config with more than 99 cards
+    """
+
+    with caplog.at_level(logging.WARNING):
+        get_config(str(test_config_dir / "error_too_many_cards.yaml"))
+
+    assert "You have defined more than 99 cards (103)." in caplog.text
