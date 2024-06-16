@@ -110,7 +110,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
                 if source.is_dir():
                     logging.debug("%s has been detected as a directory", source)
-                    self.sourcefiles.extend(get_files_in_directory(source))
+                    self.sourcefiles.extend(get_files_in_directory(source, audio_only=True))
                 elif source.is_file():
                     logging.debug("%s has been detected as a file", source)
                     self.sourcefiles.append(source)

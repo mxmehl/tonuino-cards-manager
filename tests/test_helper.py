@@ -104,27 +104,33 @@ def test_decimal_to_hex():
         assert decimal_to_hex(number) == expected
 
 
-def test_get_files_in_directory(temp_dir):
+def test_get_files_in_directory_all(test_data_dir):
     """
-    Test the get_files_in_directory function.
+    Test the get_files_in_directory function on files and directories
     """
-    # Define file and create some directories
-    (temp_dir / "file1.txt").touch()
-    (temp_dir / "file2.txt").touch()
-    (temp_dir / "fileA.txt").touch()
-    (temp_dir / "fileB.txt").touch()
-    (temp_dir / "dir1").mkdir()
-    (temp_dir / "dir2").mkdir()
-
     expected_files = [
-        temp_dir / "file1.txt",
-        temp_dir / "file2.txt",
-        temp_dir / "fileA.txt",
-        temp_dir / "fileB.txt",
+        test_data_dir / "00. not a music file.txt",
+        test_data_dir / "01. Tester - Test Sound 01.mp3",
+        test_data_dir / "02. Tester - Test Sound 02.mp3",
+        test_data_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
     ]
 
     # Expected list should be sorted
-    assert get_files_in_directory(temp_dir) == sorted(expected_files)
+    assert get_files_in_directory(test_data_dir) == sorted(expected_files)
+
+
+def test_get_files_in_directory_audio(test_data_dir):
+    """
+    Test the get_files_in_directory function on files and directories, filter non-audio files
+    """
+    expected_files = [
+        test_data_dir / "01. Tester - Test Sound 01.mp3",
+        test_data_dir / "02. Tester - Test Sound 02.mp3",
+        test_data_dir / "03. Tester - Test Sound 03 - without ID3.mp3",
+    ]
+
+    # Expected list should be sorted
+    assert get_files_in_directory(test_data_dir, audio_only=True) == sorted(expected_files)
 
 
 def test_get_files_in_empty_directory(temp_dir):
