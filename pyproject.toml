@@ -40,6 +40,7 @@ mypy = "^1.10.0"
 black = "^25.0.0"
 pytest = "^8.2.2"
 pytest-cov = "^6.0.0"
+bump-my-version = "^1.1.2"
 
 [build-system]
 requires = ["poetry-core"]
@@ -56,3 +57,16 @@ line-length = 100
 [tool.mypy]
 files = ["tonuino_cards_manager/*.py"]
 disable_error_code = ["import-untyped"]
+
+# Bump-My-Version
+[tool.bumpversion]
+commit = true
+tag = true
+allow_dirty = false
+tag_name = "v{new_version}"
+
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+regex = true
+search = "^version = \"{current_version}\""
+replace = "version = \"{new_version}\""
