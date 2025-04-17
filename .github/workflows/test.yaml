@@ -38,7 +38,7 @@ jobs:
 
   # Test building the package and installing it via pip3
   test-build-install:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -68,7 +68,7 @@ jobs:
 
   # Formatting
   pylint:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/poetrybuild
@@ -76,7 +76,7 @@ jobs:
         run: poetry run pylint tonuino_cards_manager/
 
   formatting:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/poetrybuild
@@ -86,7 +86,7 @@ jobs:
           poetry run black --check .
 
   mypy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/poetrybuild
@@ -99,4 +99,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check REUSE Compliance
-        uses: fsfe/reuse-action@v3
+        uses: fsfe/reuse-action@v5
