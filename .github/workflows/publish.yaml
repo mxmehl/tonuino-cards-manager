@@ -2,13 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-name: Python package
+name: Publish release on PyPI
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: [published]
+
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
