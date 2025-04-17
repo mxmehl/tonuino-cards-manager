@@ -4,7 +4,7 @@
 
 [tool.poetry]
 name = "tonuino-cards-manager"
-version = "0.1.2"
+version = "0.1.3"
 description = "Manage Tonuino RFID and SD cards by one configuration file. Easy, lightweight and feature-rich"
 readme = "README.md"
 authors = ["Max Mehl <mail@mehl.mx>"]
