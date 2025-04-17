@@ -152,7 +152,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
         for idx, mp3 in enumerate(self.sourcefiles):
             copy_to_sdcard(idx, mp3, dirpath)
 
-    def create_card_bytecode(  # pylint: disable=too-many-arguments
+    def create_card_bytecode(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
         cookie: str,
         version: int,
