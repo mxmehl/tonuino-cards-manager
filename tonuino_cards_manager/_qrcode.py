@@ -20,6 +20,6 @@ def generate_qr_codes(qrdata: list[str]):
         qrc.add_data("\n".join(qrlist))
         print(
             f"QR code for cards batch {idx + 1} "
-            f"(cards {(idx * maxelem) + 1} - {(idx + 1) * maxelem}):"
+            f"(cards {(idx * maxelem) + 1} - {min((idx + 1) * maxelem,len(qrdata))}):"
         )
         qrc.print_ascii()
