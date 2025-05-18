@@ -22,6 +22,7 @@ class Config:
     sourcebasedir: str = ""
     cardcookie: str = "1337B347"
     version: int = 2
+    maxcardsperqrcode: int = 4
     cards: dict[int, Card] = field(default_factory=dict)
 
     def _import_cards(self, cards: dict[str | int, dict]):
@@ -65,7 +66,7 @@ class Config:
 
     def import_config(self, data: dict):
         """Import the YAML data, overriding the defaults if present"""
-        for key in ("sourcebasedir", "cardcookie", "version"):
+        for key in ("sourcebasedir", "cardcookie", "version", "maxcardsperqrcode"):
             if key in data:
                 value = data[key]
                 # Catch None values
