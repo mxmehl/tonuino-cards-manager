@@ -9,17 +9,18 @@ import logging
 from qrcode.main import QRCode
 
 
-def generate_qr_codes(qrdata: list[str]):
+def generate_qr_codes(qrdata: list[str], maxcardsperqrcode: int):
     """Generate QR codes"""
     logging.debug("QRCode data: \n%s", "\n".join(qrdata))
     print("")
-    # Make each QR code contain max. 4 elements
-    maxelem = 4
-    for idx, qrlist in enumerate([qrdata[x : x + maxelem] for x in range(0, len(qrdata), maxelem)]):
+    # Make each QR code contain max. configured elements
+    for idx, qrlist in enumerate(
+        [qrdata[x : x + maxcardsperqrcode] for x in range(0, len(qrdata), maxcardsperqrcode)]
+    ):
         qrc = QRCode()
         qrc.add_data("\n".join(qrlist))
         print(
-            f"QR code for cards batch {idx + 1} "
-            f"(cards {(idx * maxelem) + 1} - {min((idx + 1) * maxelem,len(qrdata))}):"
+            f"QR code for cards batch {idx + 1} (cards {(idx * maxcardsperqrcode) + 1} - "
+            f"{min((idx + 1) * maxcardsperqrcode,len(qrdata))}):"
         )
         qrc.print_ascii()

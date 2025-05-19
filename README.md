@@ -73,6 +73,7 @@ The core of the **Tonuino Cards Manager** is the configuration file where you de
 # sourcebasedir: ""
 # cardcookie: "1337B347"
 # version: 2
+# maxcardsperqrcode: 4
 
 cards:
   # A whole directory in album mode
@@ -105,6 +106,7 @@ cards:
 - **sourcebasedir**: If all your music is in one directory, you can add the path here and make the `source` entries for the cards relative to this directory. Default: `""`
 - **cardcookie**: The card cookie of your Tonuino box. [Background here](https://discourse.voss.earth/t/bedeutung-der-konstante-cardcookie/10241). Default: `1337B347`
 - **version**: Card format version, `2` for Tonuino 2.1.x and TNG. Default: `2`
+- **maxcardsperqrcode**: Max number of card-configurations that are packed in one QR-Code. The more information is packed in one QR-Code, the bigger the QR-Code gets. If the QR-code is too big for your screen try a smaller number here. Default: `4`
 - **cards**: A list of RFID cards.
   - **id**: The number of the card. These numbers must be unique and be actual numbers, not texts.
     - **description**: A free-text field to describe the card, useful for collections of single songs. Only relevant for your information when handling the QR code. Default: `""`

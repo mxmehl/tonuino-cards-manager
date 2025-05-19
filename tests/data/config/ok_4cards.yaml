@@ -1,6 +1,7 @@
 # sourcebasedir: ""
 # cardcookie: "1337B347"
 # version: 2
+# maxcardsperqrcode: 4
 
 cards:
   # A single file

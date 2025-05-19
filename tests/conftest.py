@@ -8,7 +8,7 @@ from pathlib import Path
 
 import pytest
 
-from tonuino_cards_manager._config import get_config
+from tonuino_cards_manager._config import Config, get_config
 
 
 @pytest.fixture
@@ -36,9 +36,9 @@ def test_config_dir():
 
 
 @pytest.fixture
-def config(test_config_dir):  # pylint: disable=redefined-outer-name
+def config(test_config_dir) -> Config:  # pylint: disable=redefined-outer-name
     """
-    Fixture providing the the config.
+    Fixture providing an OK config with 4 cards.
     """
     return get_config(str(test_config_dir / "ok_4cards.yaml"))
 
@@ -61,3 +61,31 @@ def cards_faulty(test_config_dir):  # pylint: disable=redefined-outer-name
     Fixture providing badly configured cards from the config.
     """
     return get_config(str(test_config_dir / "error_faulty_cards.yaml")).cards
+
+
+@pytest.fixture
+def populated_qrcode_data(config: Config):  # pylint: disable=redefined-outer-name
+    """
+    Fixture providing a list of QR code data for testing
+    """
+    qrdata = []
+    for cardno, card in config.cards.items():
+        # Add card number to card DC
+        card.no = cardno
+
+        # Parse configuration and detect possible mistakes
+        card.parse_card_config()
+
+        # Create card bytecode for this directory
+        card_bytecode = card.create_card_bytecode(
+            cookie=config.cardcookie,
+            version=config.version,
+            directory=card.no,
+            mode=card.mode,
+            extra1=card.extra1,
+            extra2=card.extra2,
+        )
+
+        qrdata.append(f"{card_bytecode};{card.create_carddesc(cardno)}")
+
+    return qrdata
