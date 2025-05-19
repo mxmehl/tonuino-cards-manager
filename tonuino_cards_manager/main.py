@@ -85,7 +85,7 @@ def main():
         clean_unconfigured_dirs(args.destination, config.cards)
 
     # Create QR code
-    generate_qr_codes(qrdata,config.maxcardsperqrcode)
+    generate_qr_codes(qrdata, config.maxcardsperqrcode)
 
 
 if __name__ == "__main__":
