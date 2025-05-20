@@ -42,6 +42,7 @@ pytest = "^8.2.2"
 pytest-cov = "^6.0.0"
 bump-my-version = "^1.1.2"
 h11 = "^0.16.0"
+reuse = "^5.0.2"
 
 [build-system]
 requires = ["poetry-core"]
