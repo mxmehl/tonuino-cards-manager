@@ -151,9 +151,9 @@ def test_parse_sources_faulty_source(test_audio_dir, cards_faulty, caplog):
     assert "/this/path/does/not/exist1337 seems to be neither a file nor a directory" in caplog.text
 
 
-def test_process_card(temp_dir, test_audio_dir, cards_ok):
+def test_process_card(temp_dir, test_audio_dir, cards_ok, config):
     """Test the process_card method"""
-    cards_ok[3].process_card(temp_dir, test_audio_dir)
+    cards_ok[3].process_card(temp_dir, test_audio_dir, config.filenametype)
 
     assert os.path.exists(temp_dir / "03" / "002-Tester-Test_Sound_02.mp3")
     assert os.path.exists(temp_dir / "03" / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
@@ -168,7 +168,7 @@ def test_process_card_too_many_source_files(cards_faulty, test_audio_dir, caplog
     assert "is handling more than 255 files (285). This will not work" in caplog.text
 
 
-def test_process_card_existing_file(temp_dir, test_audio_dir, cards_ok):
+def test_process_card_existing_file(temp_dir, test_audio_dir, cards_ok, config):
     """Test the process_card method, with a file already existing at destination"""
     # Create file at the destination directory, and a sibling directory
     (temp_dir / "01").mkdir()
@@ -177,7 +177,7 @@ def test_process_card_existing_file(temp_dir, test_audio_dir, cards_ok):
     assert os.path.exists(temp_dir / "03" / "bla.mp3")
 
     # See if the file is still present afterwards. It shouldn't, but the sibling dir
-    cards_ok[3].process_card(temp_dir, test_audio_dir)
+    cards_ok[3].process_card(temp_dir, test_audio_dir, config.filenametype)
     assert not os.path.exists(temp_dir / "03" / "bla.mp3")
     assert os.path.exists(temp_dir / "01")
 
