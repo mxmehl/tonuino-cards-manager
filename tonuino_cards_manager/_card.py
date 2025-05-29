@@ -130,7 +130,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 len(self.sourcefiles),
             )
 
-    def process_card(self, destination: str, sourcebasepath: str) -> None:
+    def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> None:
         """Process a card with its configuration, also copying files. Return processed sources"""
 
         # Convert card number to two-digit folder number (max. 99), and create destination path
@@ -150,7 +150,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
         # Iterate through all files
         for idx, mp3 in enumerate(self.sourcefiles):
-            copy_to_sdcard(idx, mp3, dirpath)
+            copy_to_sdcard(idx, mp3, dirpath, filenametype)
 
     def create_card_bytecode(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
