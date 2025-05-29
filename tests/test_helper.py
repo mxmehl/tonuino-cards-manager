@@ -41,28 +41,28 @@ def test_sanitize_filename():
         assert _sanitize_filename(filename) == expected
 
 
-def test_copy_to_sdcard_with_tags(temp_dir, test_audio_dir):
+def test_copy_to_sdcard_with_tags(temp_dir, test_audio_dir, config):
     """
     Test copying an MP3 file with ID3 tags to the destination directory.
     """
     mp3file_1 = test_audio_dir / "01. Tester - Test Sound 01.mp3"
     mp3file_2 = test_audio_dir / "02. Tester - Test Sound 02.mp3"
 
-    copy_to_sdcard(0, mp3file_1, temp_dir)
-    copy_to_sdcard(1, mp3file_2, temp_dir)
+    copy_to_sdcard(0, mp3file_1, temp_dir, config.filenametype)
+    copy_to_sdcard(1, mp3file_2, temp_dir, config.filenametype)
 
     # Verify that the files were copied to the expected destination
     assert os.path.exists(temp_dir / "001-Tester-Test_Sound_01.mp3")
     assert os.path.exists(temp_dir / "002-Tester-Test_Sound_02.mp3")
 
 
-def test_copy_to_sdcard_without_tags(temp_dir, test_audio_dir):
+def test_copy_to_sdcard_without_tags(temp_dir, test_audio_dir, config):
     """
     Test copying an MP3 file without ID3 tags to the destination directory.
     """
     mp3file = test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
 
-    copy_to_sdcard(2, mp3file, temp_dir)
+    copy_to_sdcard(2, mp3file, temp_dir, config.filenametype)
 
     # Verify that the file was copied to the expected destination
     assert os.path.exists(temp_dir / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
