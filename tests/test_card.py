@@ -24,6 +24,7 @@ def test_default_card_initialization():
     assert not card.sourcefiles
     assert card.mode == "play-random"
 
+
 def test_imported_card(cards_ok):
     """Test import_card method"""
     # Card 1 is a single

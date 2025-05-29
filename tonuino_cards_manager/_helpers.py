@@ -22,14 +22,14 @@ def _sanitize_filename(filename: str) -> str:
 def copy_to_sdcard(index: int, mp3file: Path, destination_dir: Path, filenametype: str) -> None:
     """Copy a single file to the SD card in a suitable"""
     logging.debug("Processing %s", mp3file)
-    if filenametype=="mp3tags":
+    if filenametype == "mp3tags":
         # If no ID3 tags are present, use file name, otherwise $artist-$title
         try:
             meta = EasyID3(mp3file)
             filename = _sanitize_filename(f"{meta['artist'][0]}-{meta['title'][0]}")
         except (ID3NoHeaderError, KeyError):
-            logging.debug("File %s does not contain any ID3 tags."
-                "Using its file name", mp3file.name
+            logging.debug(
+                "File %s does not contain any ID3 tags. Using its file name", mp3file.name
             )
             filename = _sanitize_filename(mp3file.stem)
 
@@ -40,14 +40,16 @@ def copy_to_sdcard(index: int, mp3file: Path, destination_dir: Path, filenametyp
             # Artist and title / or filename
             filename=filename,
         )
-    elif filenametype=="tracknumber":
+    elif filenametype == "tracknumber":
         destname = "{track}.mp3".format(  # pylint: disable=consider-using-f-string
             # Track number, filled with leading zeros
             track=str(index + 1).zfill(3)
         )
     else:
-        logging.critical("You did specify a wrong filenametype '%s'."
-            "Supported are: 'mp3tags' and 'tracknumber'. ", filenametype
+        logging.critical(
+            "You did specify a wrong filenametype '%s'."
+            "Supported are: 'mp3tags' and 'tracknumber'. ",
+            filenametype,
         )
         sys.exit(1)
 
