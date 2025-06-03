@@ -4,7 +4,10 @@
 
 """Tests for _helper.py"""
 
+import logging
 import os
+
+from pytest import raises
 
 from tonuino_cards_manager._helpers import (
     _sanitize_filename,
@@ -41,31 +44,56 @@ def test_sanitize_filename():
         assert _sanitize_filename(filename) == expected
 
 
-def test_copy_to_sdcard_with_tags(temp_dir, test_audio_dir):
+def test_copy_to_sdcard_with_tags(temp_dir, test_audio_dir, config):
     """
     Test copying an MP3 file with ID3 tags to the destination directory.
     """
     mp3file_1 = test_audio_dir / "01. Tester - Test Sound 01.mp3"
     mp3file_2 = test_audio_dir / "02. Tester - Test Sound 02.mp3"
 
-    copy_to_sdcard(0, mp3file_1, temp_dir)
-    copy_to_sdcard(1, mp3file_2, temp_dir)
+    copy_to_sdcard(0, mp3file_1, temp_dir, config.filenametype)
+    copy_to_sdcard(1, mp3file_2, temp_dir, config.filenametype)
 
     # Verify that the files were copied to the expected destination
     assert os.path.exists(temp_dir / "001-Tester-Test_Sound_01.mp3")
     assert os.path.exists(temp_dir / "002-Tester-Test_Sound_02.mp3")
 
 
-def test_copy_to_sdcard_without_tags(temp_dir, test_audio_dir):
+def test_copy_to_sdcard_without_tags(temp_dir, test_audio_dir, config):
     """
     Test copying an MP3 file without ID3 tags to the destination directory.
     """
     mp3file = test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
 
-    copy_to_sdcard(2, mp3file, temp_dir)
+    copy_to_sdcard(2, mp3file, temp_dir, config.filenametype)
 
     # Verify that the file was copied to the expected destination
     assert os.path.exists(temp_dir / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
+
+
+def test_copy_to_sdcard_track_number_only(temp_dir, test_audio_dir):
+    """
+    Test copying an MP3 file with configuration "tracknumber"
+    """
+    mp3file = test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
+
+    copy_to_sdcard(3, mp3file, temp_dir, "tracknumber")
+
+    # Verify that the file was copied to the expected destination
+    assert os.path.exists(temp_dir / "004.mp3")
+
+
+def test_copy_to_sdcard_wrong_filenametype(temp_dir, test_audio_dir, caplog):
+    """
+    Test copying an MP3 file with wrong configuration of filenametype
+    """
+    mp3file = test_audio_dir / "03. Tester - Test Sound 03 - without ID3.mp3"
+    with caplog.at_level(logging.CRITICAL):
+        with raises(SystemExit):
+            copy_to_sdcard(3, mp3file, temp_dir, "thisiswrong")
+
+    # Verify error
+    assert "You did specify a wrong filenametype" in caplog.text
 
 
 def test_proper_dirname():
