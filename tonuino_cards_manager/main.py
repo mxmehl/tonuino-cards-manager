@@ -66,7 +66,7 @@ def main():
         card.parse_card_config()
 
         # Create dir for card, parse sources, and copy accordingly
-        card.process_card(args.destination, config.sourcebasedir)
+        card.process_card(args.destination, config.sourcebasedir, config.filenametype)
 
         # Create card bytecode for this directory
         card_bytecode = card.create_card_bytecode(
