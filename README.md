@@ -108,7 +108,9 @@ cards:
 - **cardcookie**: The card cookie of your Tonuino box. [Background here](https://discourse.voss.earth/t/bedeutung-der-konstante-cardcookie/10241). Default: `1337B347`
 - **version**: Card format version, `2` for Tonuino 2.1.x and TNG. Default: `2`
 - **maxcardsperqrcode**: Max number of card-configurations that are packed in one QR-Code. The more information is packed in one QR-Code, the bigger the QR-Code gets. If the QR-code is too big for your screen try a smaller number here. Default: `4`
-- **filenametype**: You  can choose the type of the filenames. `mp3tags`: The filenames are bild with the information in the mp3tags: Tracknumber-Artist-Title.mp3. As some DF-player don't work or get very slow with this kind of filenames there is the option: `tracknumber`. The files are then named only: 001.mp3 002.mp3 ... Default:`mp3tags`
+- **filenametype**: Type of the file naming. Default: `mp3tags`
+  - `mp3tags`: The filenames are bild with the information in the mp3tags: Tracknumber-Artist-Title.mp3
+  - `tracknumber`: With this value, the files are just named: `001.mp3, 002.mp3 ...`. Useful for DF-player which don't work or get very slow with the long form of audio file names.
 - **cards**: A list of RFID cards.
   - **id**: The number of the card. These numbers must be unique and be actual numbers, not texts.
     - **description**: A free-text field to describe the card, useful for collections of single songs. Only relevant for your information when handling the QR code. Default: `""`
