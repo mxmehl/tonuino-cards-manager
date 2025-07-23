@@ -10,6 +10,14 @@ import os
 from pytest import raises
 
 from tonuino_cards_manager._card import Card
+from tonuino_cards_manager._config import get_config
+
+
+def load_error_cards(test_config_dir, case: str):
+    """
+    Load a config with erroneous cards.
+    """
+    return get_config(f"{test_config_dir}/error_cards_{case}.yaml")
 
 
 def test_default_card_initialization():
@@ -63,13 +71,13 @@ def test_create_carddesc(cards_ok, test_audio_dir):
     assert cards_ok[4].create_carddesc(4) == "Card no. 4 (Favourite songs of the last few weeks)"
 
 
-def test_parse_card_config_unknown_mode(cards_faulty, caplog):
+def test_parse_card_config_unknown_mode(test_config_dir, caplog):
     """Test the parse_card_config method with an unknown mode"""
     with caplog.at_level(logging.CRITICAL):
-        with raises(SystemExit):
-            cards_faulty[1].parse_card_config()
+        with raises(ValueError):
+            load_error_cards(test_config_dir, "invalid_mode")
 
-    assert "The mode 'non-existent' is unknown, this will not work." in caplog.text
+    assert "Config validation failed: 'non-existent' is not one of" in caplog.text
 
 
 def test_parse_card_config_single(cards_ok):
@@ -87,11 +95,11 @@ def test_parse_card_config_from_to(cards_ok):
     assert cards_ok[3].extra2 == 3
 
 
-def test_parse_card_config_from_to_missing(cards_faulty, caplog):
+def test_parse_card_config_from_to_missing(test_config_dir, caplog):
     """Test the parse_card_config method with a from-to mode but for which the
     ranges haven't been defined"""
     with caplog.at_level(logging.ERROR):
-        cards_faulty[2].parse_card_config()
+        load_error_cards(test_config_dir, "missing_from_song").cards[1].parse_card_config()
 
     assert (
         "You've set a mode with from-to song ranges, but you haven't defined this range"
@@ -119,34 +127,39 @@ def test_parse_sources(test_audio_dir, cards_ok):
     )
 
 
-def test_parse_sources_none_source(test_audio_dir, cards_faulty, caplog):
+def test_parse_sources_none_source(test_config_dir, caplog):
     """Test the parse_sources method, with None source"""
-    with caplog.at_level(logging.ERROR):
-        cards_faulty[3].parse_sources(test_audio_dir)
+    with caplog.at_level(logging.CRITICAL):
+        with raises(ValueError):
+            load_error_cards(test_config_dir, "none_source")
 
-    assert "The source definition for this card seems to be empty" in caplog.text
+    assert "Config validation failed: None is not valid" in caplog.text
 
 
-def test_parse_sources_empty_source_string(test_audio_dir, cards_faulty, caplog):
+def test_parse_sources_empty_source_string(test_config_dir, caplog):
     """Test the parse_sources method, with empty source string"""
-    with caplog.at_level(logging.WARNING):
-        cards_faulty[4].parse_sources(test_audio_dir)
+    with caplog.at_level(logging.CRITICAL):
+        with raises(ValueError):
+            load_error_cards(test_config_dir, "empty_string_source")
 
-    assert "1st source of this card appears to be empty. Will not process" in caplog.text
+    assert "Config validation failed: '' should be non-empty" in caplog.text
 
 
-def test_parse_sources_empty_source_list(test_audio_dir, cards_faulty, caplog):
+def test_parse_sources_empty_source_list(test_config_dir, caplog):
     """Test the parse_sources method, with empty list entry"""
-    with caplog.at_level(logging.WARNING):
-        cards_faulty[5].parse_sources(test_audio_dir)
+    with caplog.at_level(logging.CRITICAL):
+        with raises(ValueError):
+            load_error_cards(test_config_dir, "empty_source_list_entry")
 
-    assert "2nd source of this card appears to be empty. Will not process" in caplog.text
+    assert "Config validation failed: '' should be non-empty" in caplog.text
 
 
-def test_parse_sources_faulty_source(test_audio_dir, cards_faulty, caplog):
+def test_parse_sources_faulty_source(test_audio_dir, test_config_dir, caplog):
     """Test the parse_sources method, with one faulty source"""
     with caplog.at_level(logging.WARNING):
-        cards_faulty[6].parse_sources(test_audio_dir)
+        load_error_cards(test_config_dir, "non_existent_source").cards[1].parse_sources(
+            test_audio_dir
+        )
 
     assert "/this/path/does/not/exist1337 seems to be neither a file nor a directory" in caplog.text
 
@@ -159,11 +172,12 @@ def test_process_card(temp_dir, test_audio_dir, cards_ok, config):
     assert os.path.exists(temp_dir / "03" / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
 
 
-def test_process_card_too_many_source_files(cards_faulty, test_audio_dir, caplog):
+def test_process_card_too_many_source_files(test_config_dir, test_audio_dir, caplog):
     """Test the process_card method"""
-    cards_faulty[7].parse_sources(test_audio_dir)
     with caplog.at_level(logging.WARNING):
-        cards_faulty[7].check_too_many_files()
+        card = load_error_cards(test_config_dir, "too_many_source_files").cards[1]
+        card.parse_sources(test_audio_dir)
+        card.check_too_many_files()
 
     assert "is handling more than 255 files (285). This will not work" in caplog.text
 

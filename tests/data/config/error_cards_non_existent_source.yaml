@@ -1,0 +1,4 @@
+# Non-existent source
+cards:
+  1:
+    source: "/this/path/does/not/exist1337"

@@ -1,0 +1,6 @@
+# from-to mode without from_song and to_song
+cards:
+  1:
+    source: "."
+    mode: play-from-to
+    to_song: 3

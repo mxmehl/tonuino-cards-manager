@@ -28,7 +28,7 @@ def test_audio_dir():
 
 
 @pytest.fixture
-def test_config_dir():
+def test_config_dir() -> Path:
     """
     Fixture to provide the path to the config test data directory.
     """
@@ -53,14 +53,6 @@ def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
     for i in range(1, 4):
         cardcfg[i].no = i
     return cardcfg
-
-
-@pytest.fixture
-def cards_faulty(test_config_dir):  # pylint: disable=redefined-outer-name
-    """
-    Fixture providing badly configured cards from the config.
-    """
-    return get_config(str(test_config_dir / "error_faulty_cards.yaml")).cards
 
 
 @pytest.fixture

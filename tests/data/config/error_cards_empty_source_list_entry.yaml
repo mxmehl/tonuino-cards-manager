@@ -1,0 +1,7 @@
+# Empty list entry in source
+cards:
+  1:
+    source:
+      - 01. Tester - Test Sound 01.mp3
+      - ""
+      - 02. Tester - Test Sound 02.mp3"
