@@ -5,19 +5,27 @@
 """Dataclass holding configuration for a single card and all its operations"""
 
 import logging
-import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from num2words import num2words
-
-from . import MODES
 from ._helpers import (
     copy_to_sdcard,
     decimal_to_hex,
     get_files_in_directory,
     proper_dirname,
 )
+
+MODES = {
+    "play-random": 1,
+    "album": 2,
+    "party": 3,
+    "single": 4,
+    "audiobook": 5,
+    "admin": 6,
+    "play-from-to": 7,
+    "album-from-to": 8,
+    "party-from-to": 9,
+}
 
 
 @dataclass
@@ -37,13 +45,15 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
     def import_dict_to_card(self, data: dict):
         """Import the config dict for a card as DC"""
-        for key in ("description", "source", "mode", "from_song", "to_song"):
-            if key in data:
-                if key == "source" and isinstance(data[key], str):
-                    logging.debug("Converting source string to list: %s", data[key])
-                    setattr(self, key, [data[key]])
-                else:
-                    setattr(self, key, data[key])
+        for key in data.keys():
+            value = data[key]
+            # `source` can be a string or a list. Convert it to a list if it's a string
+            if key == "source" and isinstance(value, str):
+                logging.debug("Converting source string to list: %s", value)
+                setattr(self, key, [value])
+            else:
+                logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
+                setattr(self, key, value)
 
     def create_carddesc(self, cardno: int) -> str:
         """Create a description for the card"""
@@ -60,15 +70,6 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
     def parse_card_config(self):
         """Parse configuration and detect possible mistakes"""
-        # Handle unknown mode
-        if self.mode not in MODES:
-            logging.critical(
-                "The mode '%s' is unknown, this will not work. "
-                "Remove the configuration item if you want to use the default",
-                self.mode,
-            )
-            sys.exit(1)
-
         # If mode single, set extra1 to 01 (first song in folder)
         if self.mode == "single":
             self.extra1 = 1
@@ -87,39 +88,24 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
     def parse_sources(self, sourcebasepath: str) -> None:
         """Parse sources, which can be one or multiple directories or single files"""
-        # List holding the effective Path objects of each MP3 file in the sources
+        # Check for each source whether it's a directory or file
+        for source_str in self.source:
+            source = Path(sourcebasepath) / Path(source_str)
 
-        # Handle None sources
-        if self.source is None:
-            logging.error(
-                "The source definition for this card seems to be empty. Will not process this card"
-            )
-        else:
-            # Check for each source whether it's a directory or file
-            for idx, source_str in enumerate(self.source):
-                if not source_str:
-                    logging.warning(
-                        "%s source of this card appears to be empty. Will not process",
-                        num2words(idx + 1, to="ordinal_num"),
-                    )
-                    continue
+            logging.debug("Parsing source %s", source)
 
-                source = Path(sourcebasepath) / Path(source_str)
-
-                logging.debug("Parsing source %s", source)
-
-                if source.is_dir():
-                    logging.debug("%s has been detected as a directory", source)
-                    self.sourcefiles.extend(get_files_in_directory(source, audio_only=True))
-                elif source.is_file():
-                    logging.debug("%s has been detected as a file", source)
-                    self.sourcefiles.append(source)
-                else:
-                    logging.warning(
-                        "%s seems to be neither a file nor a directory. Will not process",
-                        source,
-                    )
-                    continue
+            if source.is_dir():
+                logging.debug("%s has been detected as a directory", source)
+                self.sourcefiles.extend(get_files_in_directory(source, audio_only=True))
+            elif source.is_file():
+                logging.debug("%s has been detected as a file", source)
+                self.sourcefiles.append(source)
+            else:
+                logging.warning(
+                    "%s seems to be neither a file nor a directory. Will not process",
+                    source,
+                )
+                continue
 
     def check_too_many_files(self):
         """Check whether sources contain too many files (>255)"""
