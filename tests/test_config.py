@@ -27,7 +27,7 @@ def test_default_config_initialization():
     assert not config.cards
 
 
-def test_read_config_file(test_config_dir):
+def test_read_config_file(test_config_dir, caplog):
     """Test _read_config_file function"""
 
     # Good file, just defaults
@@ -42,8 +42,11 @@ def test_read_config_file(test_config_dir):
     assert data["version"] == 1
 
     # Erroneous config missing the cards
-    with raises(SystemExit):
-        _read_config_file(str(test_config_dir / "error_nocards.yaml"))
+    with caplog.at_level(logging.CRITICAL):
+        with raises(ValueError):
+            get_config(str(test_config_dir / "error_nocards.yaml"))
+
+    assert "Config validation failed: 'cards' is a required property" in caplog.text
 
 
 def test_load_config(test_config_dir):
@@ -87,10 +90,10 @@ def test_import_config_none_value(test_config_dir, caplog):
     """
 
     with caplog.at_level(logging.CRITICAL):
-        with raises(SystemExit):
+        with raises(ValueError):
             get_config(str(test_config_dir / "error_none_value.yaml"))
 
-    assert "The value for 'sourcebasedir' is empty (None)" in caplog.text
+    assert "Config validation failed: None is not of type 'string'" in caplog.text
 
 
 def test_import_cards_not_numeric(test_config_dir, caplog):

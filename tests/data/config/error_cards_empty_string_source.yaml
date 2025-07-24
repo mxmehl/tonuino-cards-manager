@@ -1,0 +1,4 @@
+# Empty string source
+cards:
+  1:
+    source: ""

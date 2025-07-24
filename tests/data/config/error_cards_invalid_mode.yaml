@@ -1,0 +1,5 @@
+# Mode does not exist
+cards:
+  1:
+    source: 01. Tester - Test Sound 01.mp3
+    mode: non-existent

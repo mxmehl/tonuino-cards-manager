@@ -10,6 +10,8 @@ import shutil
 import sys
 from pathlib import Path
 
+from jsonschema import FormatChecker, validate
+from jsonschema.exceptions import ValidationError
 from mutagen.easyid3 import EasyID3
 from mutagen.id3._util import ID3NoHeaderError
 
@@ -82,3 +84,13 @@ def get_files_in_directory(directory: Path, audio_only: bool = False) -> list[Pa
 def get_directories_in_directory(directory: Path) -> list[Path]:
     """Get all directories in a directory, sorted"""
     return sorted([f for f in directory.iterdir() if f.is_dir()])
+
+
+def validate_config_schema(cfg: dict, schema: dict) -> None:
+    """Validate the config against a JSON schema"""
+    try:
+        validate(instance=cfg, schema=schema, format_checker=FormatChecker())
+    except ValidationError as e:
+        logging.critical("Config validation failed: %s", e.message)
+        raise ValueError(e) from None
+    logging.debug("Config validated successfully against schema.")

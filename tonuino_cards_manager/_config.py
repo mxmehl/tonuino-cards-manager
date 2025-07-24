@@ -13,6 +13,56 @@ from dataclasses import dataclass, field
 import yaml
 
 from ._card import Card
+from ._helpers import validate_config_schema
+
+CONFIG_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "sourcebasedir": {"type": "string"},
+        "cardcookie": {"type": "string", "minLength": 8, "maxLength": 8},
+        "version": {"type": "integer", "minimum": 1},
+        "maxcardsperqrcode": {"type": "integer", "minimum": 1},
+        "filenametype": {
+            "type": "string",
+            "enum": ["mp3tags", "tracknumber"],
+        },
+        "cards": {"type": "object", "minproperties": 1},
+    },
+    "required": ["cards"],
+    "additionalProperties": False,
+}
+
+CARD_SCHEMA = {
+    "type": "object",
+    "properties": {
+        "description": {"type": "string"},
+        "source": {
+            "oneOf": [
+                {"type": "string", "minLength": 1},
+                {"type": "array", "items": {"type": "string", "minLength": 1}},
+            ],
+        },
+        "mode": {
+            "type": "string",
+            "enum": [
+                "play-random",
+                "album",
+                "party",
+                "single",
+                "audiobook",
+                "admin",
+                "play-from-to",
+                "album-from-to",
+                "party-from-to",
+            ],
+            "default": "play-random",
+        },
+        "from_song": {"type": "integer", "minimum": 1},
+        "to_song": {"type": "integer", "minimum": 1},
+    },
+    "required": ["source"],
+    "additionalProperties": False,
+}
 
 
 @dataclass
@@ -26,9 +76,12 @@ class Config:
     filenametype: str = "mp3tags"
     cards: dict[int, Card] = field(default_factory=dict)
 
-    def _import_cards(self, cards: dict[str | int, dict]):
-        """Import the cards data from dict to DC, and check for a number of
-        potential issues"""
+    def _import_and_check_cards(self, cards: dict[str | int, dict]):
+        """
+        Import the cards data from dict to DC, and check for a number of potential issues. The
+        checks limit themselves to the card key (numeric) and their role in the whole cards dict.
+        The schema check for the cards themselves is done in the Card class.
+        """
         # Check if card keys are numeric
         for key in cards:
             if isinstance(key, str) and key.isnumeric():
@@ -41,7 +94,9 @@ class Config:
 
         # Import card data, add to dict with int identifier and card config DC
         for cardno, carddata in cards.items():
+            validate_config_schema(carddata, CARD_SCHEMA)
             carddc = Card()
+            # Here, the cards are validated against the CARD_SCHEMA in _card.py
             carddc.import_dict_to_card(carddata)
             self.cards[int(cardno)] = carddc
 
@@ -65,25 +120,23 @@ class Config:
                 len(self.cards),
             )
 
-    def import_config(self, data: dict):
-        """Import the YAML data, overriding the defaults if present"""
-        for key in ("sourcebasedir", "cardcookie", "version", "maxcardsperqrcode", "filenametype"):
-            if key in data:
-                value = data[key]
-                # Catch None values
-                if value is None:
-                    logging.critical(
-                        "The value for '%s' is empty (%s). If you want to use the default, "
-                        'remove the config item. If you want it to be an empty string, use ""',
-                        key,
-                        value,
-                    )
-                    sys.exit(1)
+    def import_and_check_config(self, data: dict):
+        """
+        Import and check all YAML data, overriding the defaults if present. Works in two steps:
+            1. Import the general configuration data, which is not card-specific.
+            2. Import the cards data, which is card-specific.
+        """
+        validate_config_schema(data, CONFIG_SCHEMA)
 
-                logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
-                setattr(self, key, value)
+        for key in data.keys():
+            # Do not override the cards key, will be imported separately
+            if key == "cards":
+                continue
+            value = data[key]
+            logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
+            setattr(self, key, value)
 
-        self._import_cards(data.get("cards", {}))
+        self._import_and_check_cards(data.get("cards", {}))
 
 
 def _read_config_file(file: str) -> dict:
@@ -91,18 +144,13 @@ def _read_config_file(file: str) -> dict:
     with open(file, "r", encoding="UTF-8") as yamlfile:
         data = yaml.safe_load(yamlfile)
 
-    # Check if required keys are present
-    if "cards" not in data:
-        logging.critical("Mandatory configuration(s) missing in file %s: %s", file, "cards")
-        sys.exit(1)
-
     return data
 
 
 def _load_config_dict(data: dict) -> Config:
     """Load the read YAML file as a Config object"""
     config = Config()
-    config.import_config(data)
+    config.import_and_check_config(data)
 
     logging.debug("Configuration loaded as dataclass: %s", config)
     return config
