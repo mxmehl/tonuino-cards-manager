@@ -6,10 +6,12 @@
 
 import argparse
 import logging
+from datetime import timedelta
 
 from . import __version__
 from ._clean import clean_unconfigured_dirs
 from ._config import get_config
+from ._helpers import table_of_contents
 from ._qrcode import generate_qr_codes
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -53,6 +55,7 @@ def main():
     config = get_config(args.config)
 
     qrdata = []
+    mylist = [["Nr.", "Titel", "Dateien", "Dauer"]]
 
     # Iterate through the cards and their configs
     for cardno, card in config.cards.items():
@@ -66,7 +69,7 @@ def main():
         card.parse_card_config()
 
         # Create dir for card, parse sources, and copy accordingly
-        card.process_card(args.destination, config.sourcebasedir, config.filenametype)
+        audiolength = card.process_card(args.destination, config.sourcebasedir, config.filenametype)
 
         # Create card bytecode for this directory
         card_bytecode = card.create_card_bytecode(
@@ -78,7 +81,12 @@ def main():
             extra2=card.extra2,
         )
 
-        qrdata.append(f"{card_bytecode};{card.create_carddesc(cardno)}")
+        card_description = card.create_carddesc(cardno)
+        qrdata.append(f"{card_bytecode};{card_description}")
+        card_description = card_description.split("(")
+        card_description = card_description[1].split(")")
+        audiolength_str = str(timedelta(seconds=sum(audiolength)))
+        mylist.append([cardno, card_description[0], len(audiolength), audiolength_str])
 
     # Delete directories that have not been configured
     if args.force:
@@ -86,6 +94,9 @@ def main():
 
     # Create QR code
     generate_qr_codes(qrdata, config.maxcardsperqrcode)
+
+    # Create table of content
+    table_of_contents(mylist, args.config)
 
 
 if __name__ == "__main__":
