@@ -14,6 +14,12 @@ from jsonschema import FormatChecker, validate
 from jsonschema.exceptions import ValidationError
 from mutagen.easyid3 import EasyID3
 from mutagen.id3._util import ID3NoHeaderError
+from mutagen.mp3 import MP3
+from reportlab.lib import colors
+from reportlab.lib.pagesizes import A4
+from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.units import cm
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 
 def _sanitize_filename(filename: str) -> str:
@@ -69,6 +75,12 @@ def decimal_to_hex(number: int | str) -> str:
     return f"{int(number):02x}"
 
 
+def get_audio_length(mp3file: Path) -> int:
+    """Get the audiolength of an audiofile"""
+    file = MP3(mp3file)
+    return round(file.info.length)
+
+
 def get_files_in_directory(directory: Path, audio_only: bool = False) -> list[Path]:
     """Get all files in a directory, sorted. Optionally only display music files"""
     audioexts = (".mp3", ".opus", ".ogg")
@@ -94,3 +106,32 @@ def validate_config_schema(cfg: dict, schema: dict) -> None:
         logging.critical("Config validation failed: %s", e.message)
         raise ValueError(e) from None
     logging.debug("Config validated successfully against schema.")
+
+
+def table_of_contents(mylist, path) -> None:
+    """Write a table of contents of the SD-Card to pdf"""
+    # create document
+    path = Path(path)
+    path_toc = Path(path.parent, "Inhaltsverzeichnis_" + path.stem + ".pdf")
+    doc = SimpleDocTemplate(str(path_toc), pagesize=A4)
+    # container for the 'flowable' objects
+    elements = []
+    styles = getSampleStyleSheet()
+
+    # add flowables to container
+    elements.append(Paragraph("Inhaltsverzeichnis Tonuino", styles["Heading1"]))
+    t = Table(mylist, rowHeights=1.7 * cm, repeatRows=1, spaceBefore=1 * cm)
+    t.setStyle(
+        TableStyle(
+            [
+                ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+                ("FONT", (0, 0), (-1, 0), "Helvetica-Bold"),
+                ("INNERGRID", (0, 0), (-1, -1), 0.25, colors.black),
+                ("BOX", (0, 0), (-1, -1), 0.25, colors.black),
+                ("SIZE", (0, 0), (-1, -1), 16),
+            ]
+        )
+    )
+    elements.append(t)
+    # write the document to disk
+    doc.build(elements)
