@@ -65,7 +65,11 @@ class Card:  # pylint: disable=too-many-instance-attributes
             output += f" ({desc})"
         # Otherwise, show first file and total amount of files
         elif self.sourcefiles:
-            output += f" ({self.sourcefiles[0].name}... ({len(self.sourcefiles)} files)"
+            file_count = len(self.sourcefiles)
+            if file_count == 1:
+                output += f" ({self.sourcefiles[0].name})"
+            else:
+                output += f" ({self.sourcefiles[0].name}... {file_count} files)"
 
         return output
 
@@ -118,7 +122,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
             )
 
     def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> list[int]:
-        """Process a card with its configuration, also copying files. Return processed sources"""
+        """Process a card with its configuration, copying files and return audio lengths of card"""
 
         # Convert card number to two-digit folder number (max. 99), and create destination path
         dirpath = Path(destination) / Path(proper_dirname(self.no))
