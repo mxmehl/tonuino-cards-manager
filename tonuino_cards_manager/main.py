@@ -55,7 +55,7 @@ def main():
     config = get_config(args.config)
 
     qrdata = []
-    mylist = [["Nr.", "Titel", "Dateien", "Dauer"]]
+    toc_list = [["No.", "Description", "Files", "Duration"]]
 
     # Iterate through the cards and their configs
     for cardno, card in config.cards.items():
@@ -69,7 +69,9 @@ def main():
         card.parse_card_config()
 
         # Create dir for card, parse sources, and copy accordingly
-        audiolength = card.process_card(args.destination, config.sourcebasedir, config.filenametype)
+        card_audio_length = card.process_card(
+            args.destination, config.sourcebasedir, config.filenametype
+        )
 
         # Create card bytecode for this directory
         card_bytecode = card.create_card_bytecode(
@@ -82,11 +84,16 @@ def main():
         )
 
         card_description = card.create_carddesc(cardno)
+        # Add card to QR code generation
         qrdata.append(f"{card_bytecode};{card_description}")
+        # Extract content of card
         card_description = card_description.split("(")
         card_description = card_description[1].split(")")
-        audiolength_str = str(timedelta(seconds=sum(audiolength)))
-        mylist.append([cardno, card_description[0], len(audiolength), audiolength_str])
+        card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
+        # Add card to table of contents
+        toc_list.append(
+            [cardno, card_description[0], len(card_audio_length), card_total_audio_length_str]
+        )
 
     # Delete directories that have not been configured
     if args.force:
@@ -95,8 +102,9 @@ def main():
     # Create QR code
     generate_qr_codes(qrdata, config.maxcardsperqrcode)
 
-    # Create table of content
-    table_of_contents(mylist, args.config)
+    # Create table of contents
+    if config.tableofcontents == "enable":
+        table_of_contents(toc_list, args.config)
 
 
 if __name__ == "__main__":
