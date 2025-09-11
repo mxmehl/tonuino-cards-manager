@@ -11,6 +11,7 @@ from pathlib import Path
 from ._helpers import (
     copy_to_sdcard,
     decimal_to_hex,
+    get_audio_length,
     get_files_in_directory,
     proper_dirname,
 )
@@ -64,7 +65,11 @@ class Card:  # pylint: disable=too-many-instance-attributes
             output += f" ({desc})"
         # Otherwise, show first file and total amount of files
         elif self.sourcefiles:
-            output += f" ({self.sourcefiles[0].name}... ({len(self.sourcefiles)} files)"
+            file_count = len(self.sourcefiles)
+            if file_count == 1:
+                output += f" ({self.sourcefiles[0].name})"
+            else:
+                output += f" ({self.sourcefiles[0].name}... {file_count} files)"
 
         return output
 
@@ -116,8 +121,8 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 len(self.sourcefiles),
             )
 
-    def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> None:
-        """Process a card with its configuration, also copying files. Return processed sources"""
+    def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> list[int]:
+        """Process a card with its configuration, copying files and return audio lengths of card"""
 
         # Convert card number to two-digit folder number (max. 99), and create destination path
         dirpath = Path(destination) / Path(proper_dirname(self.no))
@@ -134,9 +139,12 @@ class Card:  # pylint: disable=too-many-instance-attributes
         # Run checks
         self.check_too_many_files()
 
+        audiolength = []
         # Iterate through all files
         for idx, mp3 in enumerate(self.sourcefiles):
             copy_to_sdcard(idx, mp3, dirpath, filenametype)
+            audiolength.append(get_audio_length(mp3))
+        return audiolength
 
     def create_card_bytecode(  # pylint: disable=too-many-arguments,too-many-positional-arguments
         self,
