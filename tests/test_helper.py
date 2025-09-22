@@ -13,9 +13,11 @@ from tonuino_cards_manager._helpers import (
     _sanitize_filename,
     copy_to_sdcard,
     decimal_to_hex,
+    get_audio_length,
     get_directories_in_directory,
     get_files_in_directory,
     proper_dirname,
+    table_of_contents,
 )
 
 
@@ -136,6 +138,14 @@ def test_decimal_to_hex():
         assert decimal_to_hex(number) == expected
 
 
+def test_get_audio_length(test_audio_dir):
+    """
+    Test the get_audio_length function on mp3 file and non audio file
+    """
+    mp3file = test_audio_dir / "01. Tester - Test Sound 01.mp3"
+    assert get_audio_length(mp3file) == 3
+
+
 def test_get_files_in_directory_all(test_audio_dir):
     """
     Test the get_files_in_directory function on files and directories
@@ -200,3 +210,16 @@ def test_get_directories_in_empty_directory(temp_dir):
     Test the get_directories_in_directory function with an empty directory.
     """
     assert get_directories_in_directory(temp_dir) == []
+
+
+def test_table_of_contents(test_config_dir):
+    """
+    Test the if the table_of_contents function creates a pdf file.
+    """
+    # If the pdf file already exists delete it
+    if os.path.exists(test_config_dir / "TOC_ok_1card.pdf"):
+        os.remove(test_config_dir / "TOC_ok_1card.pdf")
+    # test the function
+    toc_list = [["No.", "Description", "Files", "Duration"], [1, "describtion1", 1, "0:00:01"]]
+    table_of_contents(toc_list, test_config_dir / "ok_1card.yaml")
+    assert os.path.exists(test_config_dir / "TOC_ok_1card.pdf")
