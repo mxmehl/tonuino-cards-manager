@@ -35,14 +35,14 @@ tonuino-cover-converter = 'tonuino_cards_manager.cover:main'
 
 [tool.poetry.group.dev.dependencies]
 types-qrcode = "^7.4.0.20240408"
-pylint = "^3.2.3"
+pylint = "^4.0.0"
 mypy = "^1.10.0"
 black = "^25.0.0"
 pytest = "^8.2.2"
 pytest-cov = "^7.0.0"
 bump-my-version = "^1.1.2"
 h11 = "^0.16.0"
-reuse = "^5.0.2"
+reuse = "^6.0.0"
 
 [build-system]
 requires = ["poetry-core"]
