@@ -9,6 +9,8 @@ changelog:
       exclude:
         labels:
           - Renovate
+          - dependencies
     - title: Dependencies
       labels:
         - Renovate
+        - dependencies
