@@ -158,9 +158,10 @@ cython_debug/
 # Project-specific
 source
 dest
-# Cover configuration, documents and templates
+# Cover configuration, documents, templates, and table of contents
 /*.y*ml
 *.docx
 *.dotm
 *.odt
 *.ott
+*.pdf

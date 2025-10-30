@@ -111,9 +111,9 @@ cards:
 - **filenametype**: Type of the file naming. Default: `mp3tags`
   - `mp3tags`: The filenames are bild with the information in the mp3tags: Tracknumber-Artist-Title.mp3
   - `tracknumber`: With this value, the files are just named: `001.mp3, 002.mp3 ...`. Useful for DF-player which don't work or get very slow with the long form of audio file names.
-- **tableofcontents**: The tool can create a pdf with the table of contents of the SD-card. Default:`enable`
-  - `enable`: create a pdf
-  - `disable`: don't create a pdf
+- **create_tableofcontents**: The tool can create a PDF file with a table listing all cards and their contents. Default: `true`
+  - `true`: create a table of content PDF. The output path will be next to the configuration file.
+  - `false`: do not create such a file.
 - **cards**: A list of RFID cards.
   - **id**: The number of the card. These numbers must be unique and be actual numbers, not texts.
     - **description**: A free-text field to describe the card, useful for collections of single songs. Only relevant for your information when handling the QR code. Default: `""`

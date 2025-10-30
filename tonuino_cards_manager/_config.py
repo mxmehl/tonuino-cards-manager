@@ -26,7 +26,7 @@ CONFIG_SCHEMA = {
             "type": "string",
             "enum": ["mp3tags", "tracknumber"],
         },
-        "tableofcontents": {"type": "string", "enum": ["enable", "disable"]},
+        "create_tableofcontents": {"type": "boolean"},
         "cards": {"type": "object", "minproperties": 1},
     },
     "required": ["cards"],
@@ -75,7 +75,7 @@ class Config:
     version: int = 2
     maxcardsperqrcode: int = 4
     filenametype: str = "mp3tags"
-    tableofcontents: str = "enable"
+    create_tableofcontents: bool = True
     cards: dict[int, Card] = field(default_factory=dict)
 
     def _import_and_check_cards(self, cards: dict[str | int, dict]):

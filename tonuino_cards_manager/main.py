@@ -103,7 +103,7 @@ def main():
     generate_qr_codes(qrdata, config.maxcardsperqrcode)
 
     # Create table of contents
-    if config.tableofcontents == "enable":
+    if config.create_tableofcontents:
         table_of_contents(toc_list, args.config)
 
 
