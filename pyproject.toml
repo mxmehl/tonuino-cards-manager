@@ -24,26 +24,26 @@ packages = [{ include = "tonuino_cards_manager" }]
 [tool.poetry.dependencies]
 python = "^3.10"
 mutagen = "^1.47.0"
-pyyaml = "^6.0.1"
-qrcode = "^8.1"
+pyyaml = "^6.0.3"
+qrcode = "^8.2"
 wand = "^0.6.13"
-jsonschema = "^4.25.0"
-reportlab = "^4.4.3"
+jsonschema = "^4.25.1"
+reportlab = "^4.4.4"
 
 [tool.poetry.scripts]
 tonuino-cards-manager = 'tonuino_cards_manager.main:main'
 tonuino-cover-converter = 'tonuino_cards_manager.cover:main'
 
 [tool.poetry.group.dev.dependencies]
-types-qrcode = "^7.4.0.20240408"
-pylint = "^4.0.0"
-mypy = "^1.10.0"
-black = "^25.0.0"
-pytest = "^8.2.2"
+types-qrcode = "^7.4.0.20240921"
+pylint = "^4.0.2"
+mypy = "^1.18.2"
+black = "^25.9.0"
+pytest = "^8.4.2"
 pytest-cov = "^7.0.0"
-bump-my-version = "^1.1.2"
+bump-my-version = "^1.2.4"
 h11 = "^0.16.0"
-reuse = "^6.0.0"
+reuse = "^6.2.0"
 
 [build-system]
 requires = ["poetry-core"]
