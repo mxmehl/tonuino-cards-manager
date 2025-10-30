@@ -4,12 +4,13 @@
 name: Vulnerability Check of Latest Release/Tag
 
 on:
-  workflow_dispatch:  # allow to trigger manually
+  workflow_dispatch: # allow to trigger manually
   schedule:
-    - cron: "35 9 * * 1"  # run a check once a week
+    - cron: "35 9 * * 1" # run a check once a week
 
 jobs:
   osv-check:
     runs-on: ubuntu-latest
+    if: github.repository_owner == 'mxmehl'
     steps:
       - uses: mxmehl/latest-release-vulnerability-status@71769afeefe3a1f2fae289a41b0983961317c557 # v1
