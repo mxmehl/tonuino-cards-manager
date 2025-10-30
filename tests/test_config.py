@@ -40,6 +40,7 @@ def test_read_config_file(test_config_dir, caplog):
     assert "cards" in data
     assert "version" in data
     assert data["version"] == 1
+    assert "create_tableofcontents" in data
 
     # Erroneous config missing the cards
     with caplog.at_level(logging.CRITICAL):
@@ -72,6 +73,7 @@ def test_get_config(test_config_dir):
     assert config_ok1.version == 2
     assert isinstance(config_ok1.cards, dict)
     assert len(config_ok1.cards) == 4
+    assert config_ok1.create_tableofcontents
     # Test some parts of the first card
     assert 1 in config_ok1.cards
 
@@ -82,6 +84,7 @@ def test_get_config(test_config_dir):
     assert config_ok2.cardcookie == "DEADBEEF"
     assert config_ok2.version == 1
     assert len(config_ok2.cards) == 1
+    assert not config_ok2.create_tableofcontents
 
 
 def test_import_config_none_value(test_config_dir, caplog):

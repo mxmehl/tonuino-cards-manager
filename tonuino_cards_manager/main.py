@@ -44,7 +44,7 @@ def configure_logger(args) -> logging.Logger:
     return log
 
 
-def main():
+def main() -> None:
     """Main function"""
     args = parser.parse_args()
 
@@ -55,7 +55,7 @@ def main():
     config = get_config(args.config)
 
     qrdata = []
-    toc_list = [["No.", "Description", "Files", "Duration"]]
+    toc_list: list[list[str | int]] = [["No.", "Description", "Files", "Duration"]]
 
     # Iterate through the cards and their configs
     for cardno, card in config.cards.items():
@@ -87,12 +87,12 @@ def main():
         # Add card to QR code generation
         qrdata.append(f"{card_bytecode};{card_description}")
         # Extract content of card
-        card_description = card_description.split("(")
-        card_description = card_description[1].split(")")
+        card_description_qr = card_description.split("(")
+        card_description_qr = card_description_qr[1].split(")")
         card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
         # Add card to table of contents
         toc_list.append(
-            [cardno, card_description[0], len(card_audio_length), card_total_audio_length_str]
+            [cardno, card_description_qr[0], len(card_audio_length), card_total_audio_length_str]
         )
 
     # Delete directories that have not been configured

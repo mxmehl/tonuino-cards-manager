@@ -212,14 +212,14 @@ def test_get_directories_in_empty_directory(temp_dir):
     assert get_directories_in_directory(temp_dir) == []
 
 
-def test_table_of_contents(test_config_dir):
+def test_table_of_contents_creates_file(test_config_dir):
     """
     Test the if the table_of_contents function creates a pdf file.
     """
     # If the pdf file already exists delete it
-    if os.path.exists(test_config_dir / "TOC_ok_1card.pdf"):
-        os.remove(test_config_dir / "TOC_ok_1card.pdf")
+    if os.path.exists(test_config_dir / "TOC_ok_4cards.pdf"):
+        os.remove(test_config_dir / "TOC_ok_4cards.pdf")
     # test the function
     toc_list = [["No.", "Description", "Files", "Duration"], [1, "describtion1", 1, "0:00:01"]]
-    table_of_contents(toc_list, test_config_dir / "ok_1card.yaml")
-    assert os.path.exists(test_config_dir / "TOC_ok_1card.pdf")
+    table_of_contents(toc_list, test_config_dir / "ok_4cards.yaml")
+    assert os.path.exists(test_config_dir / "TOC_ok_4cards.pdf")

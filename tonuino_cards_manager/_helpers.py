@@ -111,11 +111,11 @@ def validate_config_schema(cfg: dict, schema: dict) -> None:
     logging.debug("Config validated successfully against schema.")
 
 
-def table_of_contents(toc_list, path) -> None:
+def table_of_contents(toc_list: list[list[str | int]], config_file: str) -> None:
     """Write a table of contents of the SD-Card to pdf"""
     # create document
-    path = Path(path)
-    path_toc = Path(path.parent, "TOC_" + path.stem + ".pdf")
+    path_config = Path(config_file)
+    path_toc = Path(path_config.parent, "TOC_" + path_config.stem + ".pdf")
     doc = SimpleDocTemplate(str(path_toc), pagesize=A4)
 
     # container for the 'flowable' objects
@@ -127,7 +127,7 @@ def table_of_contents(toc_list, path) -> None:
     toc_style.fontSize = 12
     toc_style.fontName = "Helvetica"
     toc_style.leading = 14
-    toc_list[0][1] = " <b>" + toc_list[0][1] + "</b> "
+    toc_list[0][1] = " <b>" + toc_list[0][1] + "</b> "  # type: ignore
     toc_list = [[l[0], Paragraph(l[1], toc_style), l[2], l[3]] for l in toc_list]
 
     # add flowables to container
