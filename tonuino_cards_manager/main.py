@@ -6,10 +6,12 @@
 
 import argparse
 import logging
+from datetime import timedelta
 
 from . import __version__
 from ._clean import clean_unconfigured_dirs
 from ._config import get_config
+from ._helpers import table_of_contents
 from ._qrcode import generate_qr_codes
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -42,7 +44,7 @@ def configure_logger(args) -> logging.Logger:
     return log
 
 
-def main():
+def main() -> None:
     """Main function"""
     args = parser.parse_args()
 
@@ -53,6 +55,7 @@ def main():
     config = get_config(args.config)
 
     qrdata = []
+    toc_list: list[list[str | int]] = [["No.", "Description", "Files", "Duration"]]
 
     # Iterate through the cards and their configs
     for cardno, card in config.cards.items():
@@ -66,7 +69,9 @@ def main():
         card.parse_card_config()
 
         # Create dir for card, parse sources, and copy accordingly
-        card.process_card(args.destination, config.sourcebasedir, config.filenametype)
+        card_audio_length = card.process_card(
+            args.destination, config.sourcebasedir, config.filenametype
+        )
 
         # Create card bytecode for this directory
         card_bytecode = card.create_card_bytecode(
@@ -78,7 +83,17 @@ def main():
             extra2=card.extra2,
         )
 
-        qrdata.append(f"{card_bytecode};{card.create_carddesc(cardno)}")
+        card_description = card.create_carddesc(cardno)
+        # Add card to QR code generation
+        qrdata.append(f"{card_bytecode};{card_description}")
+        # Extract content of card
+        card_description_qr = card_description.split("(")
+        card_description_qr = card_description_qr[1].split(")")
+        card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
+        # Add card to table of contents
+        toc_list.append(
+            [cardno, card_description_qr[0], len(card_audio_length), card_total_audio_length_str]
+        )
 
     # Delete directories that have not been configured
     if args.force:
@@ -86,6 +101,10 @@ def main():
 
     # Create QR code
     generate_qr_codes(qrdata, config.maxcardsperqrcode)
+
+    # Create table of contents
+    if config.create_tableofcontents:
+        table_of_contents(toc_list, args.config)
 
 
 if __name__ == "__main__":

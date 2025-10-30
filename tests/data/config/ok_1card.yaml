@@ -1,6 +1,7 @@
 sourcebasedir: "/foo/bar"
 cardcookie: "DEADBEEF"
 version: 1
+create_tableofcontents: false
 
 cards:
   # A single file
