@@ -58,21 +58,19 @@ def test_imported_card(cards_ok):
 def test_create_carddesc(cards_ok, test_audio_dir):
     """Test create_carddesc method"""
     # Card description before sourcefiles have been gathered
-    assert cards_ok[1].create_carddesc(1) == "Card no. 1"
+    assert cards_ok[1].create_carddesc() == "Card no. 1"
 
     # Test with parsed sources one file
     cards_ok[1].parse_sources(test_audio_dir)
-    assert cards_ok[1].create_carddesc(1) == "Card no. 1 (01. Tester - Test Sound 01.mp3)"
+    assert cards_ok[1].create_carddesc() == "Card no. 1 (01. Tester - Test Sound 01.mp3)"
 
     # Test with parsed sources two file
     cards_ok[2].parse_sources(test_audio_dir)
-    assert (
-        cards_ok[2].create_carddesc(2) == "Card no. 2 (01. Tester - Test Sound 01.mp3... 2 files)"
-    )
+    assert cards_ok[2].create_carddesc() == "Card no. 2 (01. Tester - Test Sound 01.mp3... 2 files)"
 
     # Test with preset description
     cards_ok[4].parse_sources(test_audio_dir)
-    assert cards_ok[4].create_carddesc(4) == "Card no. 4 (Favourite songs of the last few weeks)"
+    assert cards_ok[4].create_carddesc() == "Card no. 4 (Favourite songs of the last few weeks)"
 
 
 def test_parse_card_config_unknown_mode(test_config_dir, caplog):

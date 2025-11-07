@@ -63,7 +63,7 @@ def main() -> None:
         card.no = cardno
 
         # Card description and user info
-        logging.info("Processing %s", card.create_carddesc(card.no))
+        logging.info("Processing %s", card.create_carddesc())
 
         # Parse configuration and detect possible mistakes
         card.parse_card_config()
@@ -83,9 +83,10 @@ def main() -> None:
             extra2=card.extra2,
         )
 
-        card_description = card.create_carddesc(cardno)
+        card_description = card.create_carddesc()
         # Add card to QR code generation
         qrdata.append(f"{card_bytecode};{card_description}")
+
         # Extract content of card
         card_description_qr = card_description.split("(")
         card_description_qr = card_description_qr[1].split(")")

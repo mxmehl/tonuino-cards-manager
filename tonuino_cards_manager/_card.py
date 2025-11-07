@@ -56,9 +56,9 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
                 setattr(self, key, value)
 
-    def create_carddesc(self, cardno: int) -> str:
+    def create_carddesc(self) -> str:
         """Create a description for the card"""
-        output = f"Card no. {cardno}"
+        output = f"Card no. {self.no}"
 
         # If description set, take this
         if desc := self.description:
