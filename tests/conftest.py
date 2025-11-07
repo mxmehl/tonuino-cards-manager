@@ -50,8 +50,8 @@ def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
     """
     cardcfg = get_config(str(test_config_dir / "ok_4cards.yaml")).cards
     # Extending the number (cardno) value
-    for i in range(1, 4):
-        cardcfg[i].no = i
+    for index, card in cardcfg.items():
+        card.no = index
     return cardcfg
 
 
@@ -78,6 +78,6 @@ def populated_qrcode_data(config: Config):  # pylint: disable=redefined-outer-na
             extra2=card.extra2,
         )
 
-        qrdata.append(f"{card_bytecode};{card.create_carddesc(cardno)}")
+        qrdata.append(f"{card_bytecode};{card.create_carddesc()}")
 
     return qrdata

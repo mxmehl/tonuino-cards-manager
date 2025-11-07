@@ -63,7 +63,11 @@ def main() -> None:
         card.no = cardno
 
         # Card description and user info
-        logging.info("Processing %s", card.create_carddesc(card.no))
+        card_description_generic, card_description_detailed = card.create_carddesc()
+        card_description = card_description_generic
+        if card_description_detailed:
+            card_description += f" ({card_description_detailed})"
+        logging.info("Processing %s", card_description)
 
         # Parse configuration and detect possible mistakes
         card.parse_card_config()
@@ -83,16 +87,18 @@ def main() -> None:
             extra2=card.extra2,
         )
 
-        card_description = card.create_carddesc(cardno)
         # Add card to QR code generation
         qrdata.append(f"{card_bytecode};{card_description}")
+
         # Extract content of card
-        card_description_qr = card_description.split("(")
-        card_description_qr = card_description_qr[1].split(")")
+        if card_description_detailed:
+            card_description_qr = card_description_detailed
+        else:
+            card_description_qr = card_description_generic
         card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
         # Add card to table of contents
         toc_list.append(
-            [cardno, card_description_qr[0], len(card_audio_length), card_total_audio_length_str]
+            [cardno, card_description_qr, len(card_audio_length), card_total_audio_length_str]
         )
 
     # Delete directories that have not been configured
