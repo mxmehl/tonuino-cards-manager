@@ -112,6 +112,11 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 )
                 continue
 
+    def check_no_files_at_all(self):
+        """Check whether sources contain any files at all"""
+        if not self.sourcefiles:
+            logging.warning("Directory for this card does not seem to have any file at all!")
+
     def check_too_many_files(self):
         """Check whether sources contain too many files (>255)"""
         if len(self.sourcefiles) > 255:
@@ -137,6 +142,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
         self.parse_sources(sourcebasepath)
 
         # Run checks
+        self.check_no_files_at_all()
         self.check_too_many_files()
 
         audiolength = []
