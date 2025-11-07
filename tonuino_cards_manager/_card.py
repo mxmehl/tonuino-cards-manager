@@ -7,6 +7,7 @@
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
+from typing import Optional
 
 from ._helpers import (
     copy_to_sdcard,
@@ -56,22 +57,23 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
                 setattr(self, key, value)
 
-    def create_carddesc(self) -> str:
-        """Create a description for the card"""
-        output = f"Card no. {self.no}"
+    def create_carddesc(self) -> tuple[str, Optional[str]]:
+        """Create a generic and detailed (if possible) description for the card."""
+        description_generic = f"Card no. {self.no}"
+        description_detailed = None
 
         # If description set, take this
         if desc := self.description:
-            output += f" ({desc})"
+            description_detailed = desc
         # Otherwise, show first file and total amount of files
         elif self.sourcefiles:
             file_count = len(self.sourcefiles)
             if file_count == 1:
-                output += f" ({self.sourcefiles[0].name})"
+                description_detailed = f"{self.sourcefiles[0].name}"
             else:
-                output += f" ({self.sourcefiles[0].name}... {file_count} files)"
+                description_detailed = f"{self.sourcefiles[0].name}... {file_count} files"
 
-        return output
+        return description_generic, description_detailed
 
     def parse_card_config(self):
         """Parse configuration and detect possible mistakes"""
