@@ -58,21 +58,22 @@ def test_imported_card(cards_ok):
 def test_create_carddesc(cards_ok, test_audio_dir):
     """Test create_carddesc method"""
     # Card description before sourcefiles have been gathered
-    assert cards_ok[1].create_carddesc(1) == "Card no. 1"
+    assert cards_ok[1].create_carddesc() == ("Card no. 1", None)
 
     # Test with parsed sources one file
     cards_ok[1].parse_sources(test_audio_dir)
-    assert cards_ok[1].create_carddesc(1) == "Card no. 1 (01. Tester - Test Sound 01.mp3)"
+    assert cards_ok[1].create_carddesc() == ("Card no. 1", "01. Tester - Test Sound 01.mp3")
 
     # Test with parsed sources two file
     cards_ok[2].parse_sources(test_audio_dir)
-    assert (
-        cards_ok[2].create_carddesc(2) == "Card no. 2 (01. Tester - Test Sound 01.mp3... 2 files)"
+    assert cards_ok[2].create_carddesc() == (
+        "Card no. 2",
+        "01. Tester - Test Sound 01.mp3... 2 files",
     )
 
     # Test with preset description
     cards_ok[4].parse_sources(test_audio_dir)
-    assert cards_ok[4].create_carddesc(4) == "Card no. 4 (Favourite songs of the last few weeks)"
+    assert cards_ok[4].create_carddesc() == ("Card no. 4", "Favourite songs of the last few weeks")
 
 
 def test_parse_card_config_unknown_mode(test_config_dir, caplog):
@@ -174,6 +175,16 @@ def test_process_card(temp_dir, test_audio_dir, cards_ok, config):
 
     assert os.path.exists(temp_dir / "03" / "002-Tester-Test_Sound_02.mp3")
     assert os.path.exists(temp_dir / "03" / "003-03_Tester_-_Test_Sound_03_-_without_ID3.mp3")
+
+
+def test_process_card_no_files_at_all(test_config_dir, test_audio_dir, caplog):
+    """Test the process_card method"""
+    with caplog.at_level(logging.WARNING):
+        card = load_error_cards(test_config_dir, "no_files_at_all").cards[1]
+        card.parse_sources(test_audio_dir)
+        card.check_no_files_at_all()
+
+    assert "Directory for this card does not seem to have any file at all!" in caplog.text
 
 
 def test_process_card_too_many_source_files(test_config_dir, test_audio_dir, caplog):
