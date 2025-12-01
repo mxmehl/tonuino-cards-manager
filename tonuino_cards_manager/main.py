@@ -76,30 +76,30 @@ def main() -> None:
         card_audio_length = card.process_card(
             args.destination, config.sourcebasedir, config.filenametype
         )
+        if sum(card_audio_length) > 0:
+            # Create card bytecode for this directory
+            card_bytecode = card.create_card_bytecode(
+                cookie=config.cardcookie,
+                version=config.version,
+                directory=card.no,
+                mode=card.mode,
+                extra1=card.extra1,
+                extra2=card.extra2,
+            )
 
-        # Create card bytecode for this directory
-        card_bytecode = card.create_card_bytecode(
-            cookie=config.cardcookie,
-            version=config.version,
-            directory=card.no,
-            mode=card.mode,
-            extra1=card.extra1,
-            extra2=card.extra2,
-        )
+            # Add card to QR code generation
+            qrdata.append(f"{card_bytecode};{card_description}")
 
-        # Add card to QR code generation
-        qrdata.append(f"{card_bytecode};{card_description}")
-
-        # Extract content of card
-        if card_description_detailed:
-            card_description_qr = card_description_detailed
-        else:
-            card_description_qr = card_description_generic
-        card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
-        # Add card to table of contents
-        toc_list.append(
-            [cardno, card_description_qr, len(card_audio_length), card_total_audio_length_str]
-        )
+            # Extract content of card
+            if card_description_detailed:
+                card_description_qr = card_description_detailed
+            else:
+                card_description_qr = card_description_generic
+            card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
+            # Add card to table of contents
+            toc_list.append(
+                [cardno, card_description_qr, len(card_audio_length), card_total_audio_length_str]
+            )
 
     # Delete directories that have not been configured
     if args.force:
