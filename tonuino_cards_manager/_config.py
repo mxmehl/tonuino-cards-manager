@@ -60,6 +60,7 @@ CARD_SCHEMA = {
         },
         "from_song": {"type": "integer", "minimum": 1},
         "to_song": {"type": "integer", "minimum": 1},
+        "dest_folder": {"type": "integer", "minimum": 1, "maximum": 99},
     },
     "required": ["source"],
     "additionalProperties": False,
@@ -103,8 +104,9 @@ class Config:
             self.cards[int(cardno)] = carddc
 
         # Check if card keys are numbered consecutively
-        cardamount = len(self.cards)
         cardset = set(self.cards)
+        cardset = {n for n in cardset if n < 100}
+        cardamount = len(cardset)
         cardtargetlayout = set(range(1, cardamount + 1))
         if cardset != cardtargetlayout:
             logging.critical(
