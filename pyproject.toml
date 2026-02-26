@@ -26,7 +26,7 @@ python = "^3.10"
 mutagen = "^1.47.0"
 pyyaml = "^6.0.3"
 qrcode = "^8.2"
-wand = "^0.6.13"
+wand = "^0.7.0"
 jsonschema = "^4.25.1"
 reportlab = "^4.4.4"
 
