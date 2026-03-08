@@ -43,6 +43,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
     to_song: int = 0
     extra1: int = 0
     extra2: int = 0
+    dest_folder: int = 0
     sourcefiles: list[Path] = field(default_factory=list)
 
     def import_dict_to_card(self, data: dict):
@@ -92,6 +93,17 @@ class Card:  # pylint: disable=too-many-instance-attributes
                     "range. Set the keys 'from_song' and 'to_song' in your card configuration. "
                     "This card will not work as expected!"
                 )
+        # If folder number is > 99,
+        # dest_folder must exist and be between 1 and 99 and
+        # it needs to be a from-to-mode
+        if self.no > 99:
+            logging.info("Card No. %i belongs to folder %i", self.no, self.dest_folder)
+            if self.mode not in ("play-from-to", "album-from-to", "party-from-to", "single"):
+                logging.error(
+                    "You've defined a card with a number > 99, but you havn't used a mode "
+                    "with from-to song ranges or single for this card. "
+                    "This card will not work as expected!"
+                )
 
     def parse_sources(self, sourcebasepath: str) -> None:
         """Parse sources, which can be one or multiple directories or single files"""
@@ -130,15 +142,34 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
     def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> list[int]:
         """Process a card with its configuration, copying files and return audio lengths of card"""
+        if self.no < 100:
+            # Convert card number to two-digit folder number (max. 99), and create destination path
+            dirpath = Path(destination) / Path(proper_dirname(self.no))
+            offset = 0
 
-        # Convert card number to two-digit folder number (max. 99), and create destination path
-        dirpath = Path(destination) / Path(proper_dirname(self.no))
-
-        # create destination directory if not present, delete all files in it
-        dirpath.mkdir(parents=True, exist_ok=True)
-        for dirfile in get_files_in_directory(dirpath):
-            logging.debug("Delete %s from destination", dirfile)
-            dirfile.unlink(missing_ok=True)
+            # create destination directory if not present, delete all files in it
+            dirpath.mkdir(parents=True, exist_ok=True)
+            for dirfile in get_files_in_directory(dirpath):
+                logging.debug("Delete %s from destination", dirfile)
+                dirfile.unlink(missing_ok=True)
+        else:
+            # check if destination exists
+            dirpath = Path(destination) / Path(proper_dirname(self.dest_folder))
+            if dirpath.is_dir():
+                files = get_files_in_directory(dirpath, audio_only=True)
+                offset = len(files)
+            else:
+                logging.error(
+                    "Error for card no. %i: "
+                    "Card numbers > 99 are only allowed in folders that allready exist."
+                    "Folder no. %i is not defined jet. Please define card no. %i before "
+                    "this card. This card will be ignored",
+                    self.no,
+                    self.dest_folder,
+                    self.dest_folder,
+                )
+                audiolength = [0]
+                return audiolength
 
         # Parse provided sources for this card, get list of all single MP3 files
         self.parse_sources(sourcebasepath)
@@ -150,7 +181,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
         audiolength = []
         # Iterate through all files
         for idx, mp3 in enumerate(self.sourcefiles):
-            copy_to_sdcard(idx, mp3, dirpath, filenametype)
+            copy_to_sdcard(idx + offset, mp3, dirpath, filenametype)
             audiolength.append(get_audio_length(mp3))
         return audiolength
 
