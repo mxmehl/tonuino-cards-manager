@@ -1324,7 +1324,7 @@ dev = [
     { name = "reuse", specifier = ">=6.2.0,<7" },
     { name = "ruff", specifier = ">=0.15.10" },
     { name = "ty", specifier = ">=0.0.29" },
-    { name = "types-qrcode", specifier = ">=7.4.0.20240921,<8" },
+    { name = "types-qrcode", specifier = ">=8.2.0.20260408,<9" },
 ]
 
 [[package]]
@@ -1352,24 +1352,15 @@ wheels = [
 ]
 
 [[package]]
-name = "types-pillow"
-version = "10.2.0.20240822"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/18/4a/4495264dddaa600d65d68bcedb64dcccf9d9da61adff51f7d2ffd8e4c9ce/types-Pillow-10.2.0.20240822.tar.gz", hash = "sha256:559fb52a2ef991c326e4a0d20accb3bb63a7ba8d40eb493e0ecb0310ba52f0d3", size = 35389, upload-time = "2024-08-22T02:32:48.15Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/66/23/e81a5354859831fcf54d488d33b80ba6133ea84f874a9c0ec40a4881e133/types_Pillow-10.2.0.20240822-py3-none-any.whl", hash = "sha256:d9dab025aba07aeb12fd50a6799d4eac52a9603488eca09d7662543983f16c5d", size = 54354, upload-time = "2024-08-22T02:32:46.664Z" },
-]
-
-[[package]]
 name = "types-qrcode"
-version = "7.4.0.20240921"
+version = "8.2.0.20260408"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "types-pillow" },
+    { name = "pillow" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/b4/5b/88df3543714d2d706d297e8bef0da5fb00f3a6fee92aee58e8a1bff0ecf0/types-qrcode-7.4.0.20240921.tar.gz", hash = "sha256:032883842450213cb17a98bc58aebbfafd2a6dd5ca58872af995b8a1ad7c8972", size = 9777, upload-time = "2024-09-21T02:38:05.291Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/04/46/d1334f341c658adca57e66af7b699fd5dbb801556e78303bfd5146729813/types_qrcode-8.2.0.20260408.tar.gz", hash = "sha256:074478558852fd327728008a08ff1ef2b7bada29f6ec94df5fa91e1f2c1d2df5", size = 15213, upload-time = "2026-04-08T04:36:11.283Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/f7/08/78e7e63efe4c4e3d89a91ccf0ed973bca200c03f3d6e3b188d1257a04ca2/types_qrcode-7.4.0.20240921-py3-none-any.whl", hash = "sha256:869a017cf655dca3b375213245ba33fb3c1021f62f5e105e17628fc41e046914", size = 15052, upload-time = "2024-09-21T02:38:03.578Z" },
+    { url = "https://files.pythonhosted.org/packages/36/05/d9bab35be450b2c93bb288d5d4fdc849f8a812fb829c4b3c4ae99c4ef473/types_qrcode-8.2.0.20260408-py3-none-any.whl", hash = "sha256:19027b5db4bb9b46731ab91588f6ca5a8c0eeaaf794c3269a4b0643a9611bc25", size = 19864, upload-time = "2026-04-08T04:36:10.194Z" },
 ]
 
 [[package]]
