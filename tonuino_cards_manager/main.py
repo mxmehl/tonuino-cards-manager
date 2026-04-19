@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Tools to administrate and rename files to store them on a SD card for Tonuino"""
+"""Tools to administrate and rename files to store them on a SD card for Tonuino."""
 
 import argparse
 import logging
@@ -32,11 +32,10 @@ parser.add_argument("-v", "--verbose", action="store_true", help="Verbose output
 parser.add_argument("--version", action="version", version="%(prog)s " + __version__)
 
 
-def configure_logger(args) -> logging.Logger:
-    """Set logging options"""
+def configure_logger(args: argparse.Namespace) -> logging.Logger:
+    """Set logging options."""
     log = logging.getLogger()
     logging.basicConfig(
-        encoding="utf-8",
         format="%(levelname)s: %(message)s",
         level=(logging.DEBUG if args.verbose else logging.INFO),
     )
@@ -45,7 +44,7 @@ def configure_logger(args) -> logging.Logger:
 
 
 def main() -> None:
-    """Main function"""
+    """Main function."""
     args = parser.parse_args()
 
     # Set logger
@@ -91,10 +90,7 @@ def main() -> None:
         qrdata.append(f"{card_bytecode};{card_description}")
 
         # Extract content of card
-        if card_description_detailed:
-            card_description_qr = card_description_detailed
-        else:
-            card_description_qr = card_description_generic
+        card_description_qr = card_description_detailed or card_description_generic
         card_total_audio_length_str = str(timedelta(seconds=sum(card_audio_length)))
         # Add card to table of contents
         toc_list.append(

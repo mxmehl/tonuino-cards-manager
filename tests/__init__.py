@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2024 Max Mehl <https://mehl.mx>
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+"""Tests for tonuino_cards_manager."""

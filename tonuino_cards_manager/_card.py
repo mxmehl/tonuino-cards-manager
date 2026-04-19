@@ -2,12 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Dataclass holding configuration for a single card and all its operations"""
+"""Dataclass holding configuration for a single card and all its operations."""
 
 import logging
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Optional
 
 from ._helpers import (
     copy_to_sdcard,
@@ -32,7 +31,7 @@ MODES = {
 
 @dataclass
 class Card:  # pylint: disable=too-many-instance-attributes
-    """Dataclass holding a single card, its configuration and operations"""
+    """Dataclass holding a single card, its configuration and operations."""
 
     no: int = 0
     description: str = ""
@@ -45,10 +44,9 @@ class Card:  # pylint: disable=too-many-instance-attributes
     extra2: int = 0
     sourcefiles: list[Path] = field(default_factory=list)
 
-    def import_dict_to_card(self, data: dict):
-        """Import the config dict for a card as DC"""
-        for key in data.keys():
-            value = data[key]
+    def import_dict_to_card(self, data: dict) -> None:
+        """Import the config dict for a card as DC."""
+        for key, value in data.items():
             # `source` can be a string or a list. Convert it to a list if it's a string
             if key == "source" and isinstance(value, str):
                 logging.debug("Converting source string to list: %s", value)
@@ -57,7 +55,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
                 setattr(self, key, value)
 
-    def create_carddesc(self) -> tuple[str, Optional[str]]:
+    def create_carddesc(self) -> tuple[str, str | None]:
         """Create a generic and detailed (if possible) description for the card."""
         description_generic = f"Card no. {self.no}"
         description_detailed = None
@@ -75,8 +73,8 @@ class Card:  # pylint: disable=too-many-instance-attributes
 
         return description_generic, description_detailed
 
-    def parse_card_config(self):
-        """Parse configuration and detect possible mistakes"""
+    def parse_card_config(self) -> None:
+        """Parse configuration and detect possible mistakes."""
         # If mode single, set extra1 to 01 (first song in folder)
         if self.mode == "single":
             self.extra1 = 1
@@ -94,7 +92,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 )
 
     def parse_sources(self, sourcebasepath: str) -> None:
-        """Parse sources, which can be one or multiple directories or single files"""
+        """Parse sources, which can be one or multiple directories or single files."""
         # Check for each source whether it's a directory or file
         for source_str in self.source:
             source = Path(sourcebasepath) / Path(source_str)
@@ -114,14 +112,14 @@ class Card:  # pylint: disable=too-many-instance-attributes
                 )
                 continue
 
-    def check_no_files_at_all(self):
-        """Check whether sources contain any files at all"""
+    def check_no_files_at_all(self) -> None:
+        """Check whether sources contain any files at all."""
         if not self.sourcefiles:
             logging.warning("Directory for this card does not seem to have any file at all!")
 
-    def check_too_many_files(self):
-        """Check whether sources contain too many files (>255)"""
-        if len(self.sourcefiles) > 255:
+    def check_too_many_files(self) -> None:
+        """Check whether sources contain too many files (>255)."""
+        if len(self.sourcefiles) > 255:  # noqa: PLR2004
             logging.warning(
                 "This card and therefore a directory on the SD card is handling "
                 "more than 255 files (%s). This will not work in typical Tonuino MP3 players!",
@@ -129,8 +127,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
             )
 
     def process_card(self, destination: str, sourcebasepath: str, filenametype: str) -> list[int]:
-        """Process a card with its configuration, copying files and return audio lengths of card"""
-
+        """Process a card with its configuration, copying files and return audio lengths of card."""
         # Convert card number to two-digit folder number (max. 99), and create destination path
         dirpath = Path(destination) / Path(proper_dirname(self.no))
 
@@ -154,7 +151,7 @@ class Card:  # pylint: disable=too-many-instance-attributes
             audiolength.append(get_audio_length(mp3))
         return audiolength
 
-    def create_card_bytecode(  # pylint: disable=too-many-arguments,too-many-positional-arguments
+    def create_card_bytecode(  # noqa: PLR0913
         self,
         cookie: str,
         version: int,
@@ -163,13 +160,9 @@ class Card:  # pylint: disable=too-many-instance-attributes
         extra1: int,
         extra2: int,
     ) -> str:
-        """Create the bytecode for a card"""
-        # pylint: disable=consider-using-f-string
-        return "{cookie}{version}{directory}{mode}{extra1}{extra2}".format(
-            cookie=cookie,
-            version=decimal_to_hex(version),
-            directory=decimal_to_hex(directory),
-            mode=decimal_to_hex(MODES[mode]),
-            extra1=decimal_to_hex(extra1),
-            extra2=decimal_to_hex(extra2),
+        """Create the bytecode for a card."""
+        mode_hex = decimal_to_hex(MODES[mode])
+        return (
+            f"{cookie}{decimal_to_hex(version)}{decimal_to_hex(directory)}"
+            f"{mode_hex}{decimal_to_hex(extra1)}{decimal_to_hex(extra2)}"
         )

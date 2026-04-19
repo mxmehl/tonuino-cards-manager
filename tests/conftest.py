@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Pytest fixtures"""
+"""Pytest fixtures."""
 
 from pathlib import Path
 
@@ -13,41 +13,31 @@ from tonuino_cards_manager._config import Config, get_config
 
 @pytest.fixture
 def temp_dir(tmp_path):
-    """
-    Fixture for creating a temporary directory for testing.
-    """
+    """Fixture for creating a temporary directory for testing."""
     return tmp_path
 
 
 @pytest.fixture
 def test_audio_dir():
-    """
-    Fixture to provide the path to the audio test data directory.
-    """
+    """Fixture to provide the path to the audio test data directory."""
     return Path(__file__).parent / "data" / "audio"
 
 
 @pytest.fixture
 def test_config_dir() -> Path:
-    """
-    Fixture to provide the path to the config test data directory.
-    """
+    """Fixture to provide the path to the config test data directory."""
     return Path(__file__).parent / "data" / "config"
 
 
 @pytest.fixture
 def config(test_config_dir) -> Config:  # pylint: disable=redefined-outer-name
-    """
-    Fixture providing an OK config with 4 cards.
-    """
+    """Fixture providing an OK config with 4 cards."""
     return get_config(str(test_config_dir / "ok_4cards.yaml"))
 
 
 @pytest.fixture
 def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
-    """
-    Fixture providing well configured cards from the config.
-    """
+    """Fixture providing well configured cards from the config."""
     cardcfg = get_config(str(test_config_dir / "ok_4cards.yaml")).cards
     # Extending the number (cardno) value
     for index, card in cardcfg.items():
@@ -57,9 +47,7 @@ def cards_ok(test_config_dir):  # pylint: disable=redefined-outer-name
 
 @pytest.fixture
 def populated_qrcode_data(config: Config):  # pylint: disable=redefined-outer-name
-    """
-    Fixture providing a list of QR code data for testing
-    """
+    """Fixture providing a list of QR code data for testing."""
     qrdata = []
     for cardno, card in config.cards.items():
         # Add card number to card DC

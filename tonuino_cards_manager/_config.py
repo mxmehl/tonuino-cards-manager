@@ -2,9 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""
-Dataclass holding general configuration
-"""
+"""Dataclass holding general configuration."""
 
 import logging
 import sys
@@ -68,7 +66,7 @@ CARD_SCHEMA = {
 
 @dataclass
 class Config:
-    """Dataclass holding the configuration for all cards"""
+    """Dataclass holding the configuration for all cards."""
 
     sourcebasedir: str = ""
     cardcookie: str = "1337B347"
@@ -78,7 +76,7 @@ class Config:
     create_tableofcontents: bool = True
     cards: dict[int, Card] = field(default_factory=dict)
 
-    def _import_and_check_cards(self, cards: dict[str | int, dict]):
+    def _import_and_check_cards(self, cards: dict[str | int, dict]) -> None:
         """
         Import the cards data from dict to DC, and check for a number of potential issues. The
         checks limit themselves to the card key (numeric) and their role in the whole cards dict.
@@ -86,9 +84,7 @@ class Config:
         """
         # Check if card keys are numeric
         for key in cards:
-            if isinstance(key, str) and key.isnumeric():
-                pass
-            elif isinstance(key, int):
+            if (isinstance(key, str) and key.isnumeric()) or isinstance(key, int):
                 pass
             else:
                 logging.critical("Card identifiers must be numeric. Found '%s' instead", key)
@@ -115,14 +111,14 @@ class Config:
             sys.exit(1)
 
         # Check if more than 99 cards
-        if len(self.cards) > 99:
+        if len(self.cards) > 99:  # noqa: PLR2004
             logging.warning(
                 "You have defined more than 99 cards (%s). "
                 "This will not work in typical Tonuino MP3 players!",
                 len(self.cards),
             )
 
-    def import_and_check_config(self, data: dict):
+    def import_and_check_config(self, data: dict) -> None:
         """
         Import and check all YAML data, overriding the defaults if present. Works in two steps:
             1. Import the general configuration data, which is not card-specific.
@@ -130,11 +126,10 @@ class Config:
         """
         validate_config_schema(data, CONFIG_SCHEMA)
 
-        for key in data.keys():
+        for key, value in data.items():
             # Do not override the cards key, will be imported separately
             if key == "cards":
                 continue
-            value = data[key]
             logging.debug("Overriding default configuration for '%s' with '%s'", key, value)
             setattr(self, key, value)
 
@@ -142,15 +137,13 @@ class Config:
 
 
 def _read_config_file(file: str) -> dict:
-    """Read config file and detect if cards are defined"""
-    with open(file, "r", encoding="UTF-8") as yamlfile:
-        data = yaml.safe_load(yamlfile)
-
-    return data
+    """Read config file and detect if cards are defined."""
+    with open(file, encoding="UTF-8") as yamlfile:
+        return yaml.safe_load(yamlfile)
 
 
 def _load_config_dict(data: dict) -> Config:
-    """Load the read YAML file as a Config object"""
+    """Load the read YAML file as a Config object."""
     config = Config()
     config.import_and_check_config(data)
 
@@ -159,6 +152,6 @@ def _load_config_dict(data: dict) -> Config:
 
 
 def get_config(file: str) -> Config:
-    """Read config and return Config object"""
+    """Read config and return Config object."""
     data = _read_config_file(file)
     return _load_config_dict(data)
