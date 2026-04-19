@@ -12,9 +12,9 @@ We are committed to fostering a welcoming, respectful, and harassment-free envir
 
 ## Development setup
 
-Starting development is as easy as installing Python `poetry` and running `poetry install` once.
+Starting development is as easy as installing Python `uv` and running `uv sync` once.
 
-In order to run the project in the new virtual environment, run `poetry run tonuino-cards-manager`.
+In order to run the project in the new virtual environment, run `uv run tonuino-cards-manager`.
 
 ## Test locally
 
@@ -24,7 +24,7 @@ In the CI pipeline, we run a number of functional and syntactic checks to keep t
 
 Feel free to make that your [local pre-commit hook](https://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks).
 
-Note: This as well requires `poetry` to be installed, the rest should be taken care of automatically.
+Note: This as well requires `uv` to be installed, the rest should be taken care of automatically.
 
 
 ## Contribution workflow

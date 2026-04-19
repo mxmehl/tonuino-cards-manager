@@ -2,17 +2,15 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Tests for _qrcode.py"""
+"""Tests for _qrcode.py."""
 
-from pytest import raises
+import pytest
 
 from tonuino_cards_manager._qrcode import generate_qr_codes
 
 
-def test_generate_qr_codes_direct(capsys):
-    """
-    Test QR code generation with a list of data and a maximum number of cards per QR code.
-    """
+def test_generate_qr_codes_direct(capsys) -> None:
+    """Test QR code generation with a list of data and a maximum number of cards per QR code."""
     # Test data
     test_data = ["card1:data1", "card2:data2", "card3:data3"]
     maxcardsperqrcode = 2
@@ -34,12 +32,11 @@ def test_generate_qr_codes_direct(capsys):
     assert output.count("QR code for cards batch") == 2
 
 
-def test_generate_qr_codes_from_default_config(config, populated_qrcode_data, capsys):
+def test_generate_qr_codes_from_default_config(config, populated_qrcode_data, capsys) -> None:
     """
     Test QR code generation with the default test config file with the default number of cards per
-    QR code
+    QR code.
     """
-
     # Create QR code
     generate_qr_codes(populated_qrcode_data, config.maxcardsperqrcode)
 
@@ -55,11 +52,10 @@ def test_generate_qr_codes_from_default_config(config, populated_qrcode_data, ca
     assert output.count("QR code for cards batch") == 1
 
 
-def test_generate_qr_codes_from_config_with_small_qrcodes(config, populated_qrcode_data, capsys):
-    """
-    Test QR code generation with a config with a lower amount of cards per QR code
-    """
-
+def test_generate_qr_codes_from_config_with_small_qrcodes(
+    config, populated_qrcode_data, capsys
+) -> None:
+    """Test QR code generation with a config with a lower amount of cards per QR code."""
     # Set a smaller maxcardsperqrcode to test the split
     config.maxcardsperqrcode = 3
 
@@ -80,12 +76,11 @@ def test_generate_qr_codes_from_config_with_small_qrcodes(config, populated_qrco
     assert output.count("QR code for cards batch") == 2
 
 
-def test_generate_qr_codes_from_config_with_too_many(config, populated_qrcode_data):
+def test_generate_qr_codes_from_config_with_too_many(config, populated_qrcode_data) -> None:
     """
     Test QR code generation with a config with a too high amount of cards per QR code (more than
-    2953 bytes)
+    2953 bytes).
     """
-
     # Create a large list of QR code data to exceed the 2953 bytes limit
     qrcode_data_huge = populated_qrcode_data * 20
     bytecount = sum(len(card.encode("utf-8")) for card in qrcode_data_huge)
@@ -95,5 +90,5 @@ def test_generate_qr_codes_from_config_with_too_many(config, populated_qrcode_da
     config.maxcardsperqrcode = 100
 
     # Create QR code and expect ValueError due to exceeding QR code size limit
-    with raises(ValueError):
+    with pytest.raises(ValueError):
         generate_qr_codes(qrcode_data_huge, config.maxcardsperqrcode)

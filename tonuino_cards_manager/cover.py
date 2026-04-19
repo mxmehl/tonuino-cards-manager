@@ -2,14 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Convert cover images to many potentially working formats"""
+"""Convert cover images to many potentially working formats."""
 
 import argparse
-from os import path
 from pathlib import Path
 
-from wand.color import Color  # type: ignore
-from wand.image import Image  # type: ignore
+from wand.color import Color  # type: ignore[import-untyped]
+from wand.image import Image  # type: ignore[import-untyped]
 
 BORDERS = {"top": 5, "right": 0, "bottom": 5, "left": 0}
 DIMENSIONS_DICT = {
@@ -17,7 +16,7 @@ DIMENSIONS_DICT = {
     "height": 508 - BORDERS["top"] - BORDERS["bottom"],
 }
 DIMENSIONS_STR = f"{DIMENSIONS_DICT['width']}x{DIMENSIONS_DICT['height']}"
-ROTATION = int(-90)
+ROTATION = -90
 
 parser = argparse.ArgumentParser(description=__doc__)
 parser.add_argument(
@@ -28,19 +27,19 @@ parser.add_argument(
 )
 
 
-def filename_extend(filename, *additions):
-    """Add a certain string to a filename, e.g. file.jpg to file-addition.jpg"""
+def filename_extend(filename: str, *additions: str) -> str:
+    """Add a certain string to a filename, e.g. file.jpg to file-addition.jpg."""
     filebasename = Path(filename).stem + "-"
-    filedirname = path.dirname(filename)
+    filedirname = str(Path(filename).parent)
     fileext = Path(filename).suffix
 
-    additions = [x for x in additions if x]
+    additions_list = [x for x in additions if x]
 
-    return filedirname + "/" + filebasename + "-".join(additions) + fileext
+    return filedirname + "/" + filebasename + "-".join(additions_list) + fileext
 
 
-def save_file(image: Image, filename, *additions) -> None:
-    """Save a file under another file name, using an identifier"""
+def save_file(image: Image, filename: str, *additions: str) -> None:
+    """Save a file under another file name, using an identifier."""
     # Load the image
     # adding top and bottom border sizes
     new_height = image.height + BORDERS["top"] + BORDERS["bottom"]
@@ -54,8 +53,8 @@ def save_file(image: Image, filename, *additions) -> None:
         img.save(filename=filename_extend(filename, *additions))
 
 
-def all_operations(img: Image, filename: str, rotation=False):
-    """Wrapper for all image operations"""
+def all_operations(img: Image, filename: str, rotation: bool = False) -> None:
+    """Wrapper for all image operations."""
     rot = "rot" if rotation else ""
     # Merely set dimensions without cropping
     with img.clone() as i:
@@ -68,14 +67,13 @@ def all_operations(img: Image, filename: str, rotation=False):
         save_file(i, filename, "liquid", rot)
 
     # Blurred background extension
-    with img.clone() as i:
-        with i.clone() as blurred:
-            blurred.blur(0, 9)
-            blurred.resize(**DIMENSIONS_DICT)
+    with img.clone() as i, i.clone() as blurred:
+        blurred.blur(0, 9)
+        blurred.resize(**DIMENSIONS_DICT)
 
-            i.transform(resize=DIMENSIONS_STR)
-            blurred.composite(i, gravity="center", operator="over")
-            save_file(blurred, filename, "blurred", rot)
+        i.transform(resize=DIMENSIONS_STR)
+        blurred.composite(i, gravity="center", operator="over")
+        save_file(blurred, filename, "blurred", rot)
 
     # White background extension
     with img.clone() as i:
@@ -90,7 +88,6 @@ def all_operations(img: Image, filename: str, rotation=False):
 
     # Most dominant color background extension
     with img.clone() as i:
-
         color = get_dominant_color(filename)
 
         # Resize the image while preserving the aspect ratio
@@ -103,13 +100,13 @@ def all_operations(img: Image, filename: str, rotation=False):
             save_file(bg, filename, "bg-dominant", rot)
 
 
-def rgb_to_hex(r, g, b):
-    """Convert RGB color to HEX value"""
+def rgb_to_hex(r: int, g: int, b: int) -> str:
+    """Convert RGB color to HEX value."""
     return f"#{r:02x}{g:02x}{b:02x}".upper()
 
 
-def get_dominant_color(image_path):
-    """Get the most frequently used color of an image"""
+def get_dominant_color(image_path: str) -> str:
+    """Get the most frequently used color of an image."""
     with Image(filename=image_path) as img:
         # Resize the image to speed up the process
         img.sample(100, 100)  # Resize to 100x100 pixels
@@ -123,8 +120,8 @@ def get_dominant_color(image_path):
         return most_frequent_color.string
 
 
-def main():
-    """Main function"""
+def main() -> None:
+    """Main function."""
     args = parser.parse_args()
 
     filename = args.file

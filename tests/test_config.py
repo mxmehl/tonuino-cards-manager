@@ -2,11 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Tests for _config.py"""
+"""Tests for _config.py."""
 
 import logging
 
-from pytest import raises
+import pytest
 
 from tonuino_cards_manager._config import (
     Config,
@@ -16,10 +16,8 @@ from tonuino_cards_manager._config import (
 )
 
 
-def test_default_config_initialization():
-    """
-    Test the default initialization of the Config class.
-    """
+def test_default_config_initialization() -> None:
+    """Test the default initialization of the Config class."""
     config = Config()
     assert config.sourcebasedir == ""
     assert config.cardcookie == "1337B347"
@@ -27,9 +25,8 @@ def test_default_config_initialization():
     assert not config.cards
 
 
-def test_read_config_file(test_config_dir, caplog):
-    """Test _read_config_file function"""
-
+def test_read_config_file(test_config_dir, caplog) -> None:
+    """Test _read_config_file function."""
     # Good file, just defaults
     data = _read_config_file(str(test_config_dir / "ok_4cards.yaml"))
     assert "version" not in data
@@ -43,15 +40,14 @@ def test_read_config_file(test_config_dir, caplog):
     assert "create_tableofcontents" in data
 
     # Erroneous config missing the cards
-    with caplog.at_level(logging.CRITICAL):
-        with raises(ValueError):
-            get_config(str(test_config_dir / "error_nocards.yaml"))
+    with caplog.at_level(logging.CRITICAL), pytest.raises(ValueError):
+        get_config(str(test_config_dir / "error_nocards.yaml"))
 
     assert "Config validation failed: 'cards' is a required property" in caplog.text
 
 
-def test_load_config(test_config_dir):
-    """Test the _load_config_dict function"""
+def test_load_config(test_config_dir) -> None:
+    """Test the _load_config_dict function."""
     data = _read_config_file(str(test_config_dir / "ok_4cards.yaml"))
 
     config = _load_config_dict(data)
@@ -60,11 +56,8 @@ def test_load_config(test_config_dir):
     assert config.cardcookie == "1337B347"
 
 
-def test_get_config(test_config_dir):
-    """
-    Test the get_config function with some config files.
-    """
-
+def test_get_config(test_config_dir) -> None:
+    """Test the get_config function with some config files."""
     # Normal config with defaults
     config_ok1 = get_config(str(test_config_dir / "ok_4cards.yaml"))
 
@@ -87,47 +80,32 @@ def test_get_config(test_config_dir):
     assert not config_ok2.create_tableofcontents
 
 
-def test_import_config_none_value(test_config_dir, caplog):
-    """
-    Test the_import_config method with none value.
-    """
-
-    with caplog.at_level(logging.CRITICAL):
-        with raises(ValueError):
-            get_config(str(test_config_dir / "error_none_value.yaml"))
+def test_import_config_none_value(test_config_dir, caplog) -> None:
+    """Test the_import_config method with none value."""
+    with caplog.at_level(logging.CRITICAL), pytest.raises(ValueError):
+        get_config(str(test_config_dir / "error_none_value.yaml"))
 
     assert "Config validation failed: None is not of type 'string'" in caplog.text
 
 
-def test_import_cards_not_numeric(test_config_dir, caplog):
-    """
-    Test the _import_cards method with non-numeric card keys.
-    """
-
-    with caplog.at_level(logging.CRITICAL):
-        with raises(SystemExit):
-            get_config(str(test_config_dir / "error_not_numeric.yaml"))
+def test_import_cards_not_numeric(test_config_dir, caplog) -> None:
+    """Test the _import_cards method with non-numeric card keys."""
+    with caplog.at_level(logging.CRITICAL), pytest.raises(SystemExit):
+        get_config(str(test_config_dir / "error_not_numeric.yaml"))
 
     assert "Card identifiers must be numeric. Found 'two' instead" in caplog.text
 
 
-def test_import_cards_non_consecutive(test_config_dir, caplog):
-    """
-    Test the _import_cards method with non-consecutive card keys.
-    """
-
-    with caplog.at_level(logging.CRITICAL):
-        with raises(SystemExit):
-            get_config(str(test_config_dir / "error_non_consecutive.yaml"))
+def test_import_cards_non_consecutive(test_config_dir, caplog) -> None:
+    """Test the _import_cards method with non-consecutive card keys."""
+    with caplog.at_level(logging.CRITICAL), pytest.raises(SystemExit):
+        get_config(str(test_config_dir / "error_non_consecutive.yaml"))
 
     assert "The 2 cards don't seem to be numbered consecutively" in caplog.text
 
 
-def test_import_cards_too_many(test_config_dir, caplog):
-    """
-    Test a config with more than 99 cards
-    """
-
+def test_import_cards_too_many(test_config_dir, caplog) -> None:
+    """Test a config with more than 99 cards."""
     with caplog.at_level(logging.WARNING):
         get_config(str(test_config_dir / "error_too_many_cards.yaml"))
 

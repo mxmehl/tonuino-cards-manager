@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Helper functions for file operations"""
+"""Helper functions for file operations."""
 
 import logging
 from pathlib import Path
@@ -12,8 +12,8 @@ from ._card import Card
 from ._helpers import get_directories_in_directory, proper_dirname
 
 
-def clean_unconfigured_dirs(destination: str, cards: dict[int, Card]):
-    """Delete directories that are not configured as cards"""
+def clean_unconfigured_dirs(destination: str, cards: dict[int, Card]) -> None:
+    """Delete directories that are not configured as cards."""
     dest = Path(destination)
     # Calculate which directories are handled by the configuration
     handled_dirs = [proper_dirname(card) for card in cards]

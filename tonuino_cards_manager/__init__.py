@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Global constants"""
+"""Global constants."""
 
 from importlib.metadata import version
 

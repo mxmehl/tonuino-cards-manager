@@ -11,6 +11,8 @@ on:
 jobs:
   osv-check:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     if: github.repository_owner == 'mxmehl'
     steps:
       - uses: mxmehl/latest-release-vulnerability-status@71769afeefe3a1f2fae289a41b0983961317c557 # v1.2.1

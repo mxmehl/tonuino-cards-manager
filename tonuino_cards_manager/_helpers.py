@@ -2,13 +2,14 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-"""Helper functions for copy operations and conversions"""
+"""Helper functions for copy operations and conversions."""
 
 import logging
 import re
 import shutil
 import sys
 from pathlib import Path
+from typing import Any
 
 from jsonschema import FormatChecker, validate
 from jsonschema.exceptions import ValidationError
@@ -23,12 +24,12 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Table, TableStyle
 
 
 def _sanitize_filename(filename: str) -> str:
-    """Sanitize a filename"""
+    """Sanitize a filename."""
     return re.sub("[^A-Za-zÄÖÜäöü0-9-_]+", "", filename.replace(" ", "_"))
 
 
 def copy_to_sdcard(index: int, mp3file: Path, destination_dir: Path, filenametype: str) -> None:
-    """Copy a single file to the SD card in a suitable"""
+    """Copy a single file to the SD card in a suitable."""
     logging.debug("Processing %s", mp3file)
     if filenametype == "mp3tags":
         # If no ID3 tags are present, use file name, otherwise $artist-$title
@@ -42,17 +43,13 @@ def copy_to_sdcard(index: int, mp3file: Path, destination_dir: Path, filenametyp
             filename = _sanitize_filename(mp3file.stem)
 
         # copy file to destination using a compatible name based on tags
-        destname = "{track}-{filename}.mp3".format(  # pylint: disable=consider-using-f-string
-            # Track number, filled with leading zeros
-            track=str(index + 1).zfill(3),
-            # Artist and title / or filename
-            filename=filename,
-        )
+        # Track number, filled with leading zeros
+        track = str(index + 1).zfill(3)
+        destname = f"{track}-{filename}.mp3"
     elif filenametype == "tracknumber":
-        destname = "{track}.mp3".format(  # pylint: disable=consider-using-f-string
-            # Track number, filled with leading zeros
-            track=str(index + 1).zfill(3)
-        )
+        # Track number, filled with leading zeros
+        track = str(index + 1).zfill(3)
+        destname = f"{track}.mp3"
     else:
         logging.critical(
             "You did specify a wrong filenametype '%s'."
@@ -66,17 +63,17 @@ def copy_to_sdcard(index: int, mp3file: Path, destination_dir: Path, filenametyp
 
 
 def proper_dirname(dirno: int | str) -> str:
-    """Convert a directory number to a proper two-digit directory name"""
+    """Convert a directory number to a proper two-digit directory name."""
     return str(dirno).zfill(2)
 
 
 def decimal_to_hex(number: int | str) -> str:
-    """Convert a decimal number to a hex number"""
+    """Convert a decimal number to a hex number."""
     return f"{int(number):02x}"
 
 
 def get_audio_length(mp3file: Path) -> int:
-    """Get the audiolength of an audiofile"""
+    """Get the audiolength of an audiofile."""
     file = MP3(mp3file)
     if file.info is not None and hasattr(file.info, "length"):
         return round(file.info.length)
@@ -85,7 +82,7 @@ def get_audio_length(mp3file: Path) -> int:
 
 
 def get_files_in_directory(directory: Path, audio_only: bool = False) -> list[Path]:
-    """Get all files in a directory, sorted. Optionally only display music files"""
+    """Get all files in a directory, sorted. Optionally only display music files."""
     audioexts = (".mp3", ".opus", ".ogg")
     allfiles = [f for f in directory.iterdir() if f.is_file()]
 
@@ -97,12 +94,12 @@ def get_files_in_directory(directory: Path, audio_only: bool = False) -> list[Pa
 
 
 def get_directories_in_directory(directory: Path) -> list[Path]:
-    """Get all directories in a directory, sorted"""
+    """Get all directories in a directory, sorted."""
     return sorted([f for f in directory.iterdir() if f.is_dir()])
 
 
 def validate_config_schema(cfg: dict, schema: dict) -> None:
-    """Validate the config against a JSON schema"""
+    """Validate the config against a JSON schema."""
     try:
         validate(instance=cfg, schema=schema, format_checker=FormatChecker())
     except ValidationError as e:
@@ -112,7 +109,7 @@ def validate_config_schema(cfg: dict, schema: dict) -> None:
 
 
 def table_of_contents(toc_list: list[list[str | int]], config_file: str) -> None:
-    """Write a table of contents of the SD-Card to pdf"""
+    """Write a table of contents of the SD-Card to pdf."""
     # create document
     path_config = Path(config_file)
     path_toc = Path(path_config.parent, "TOC_" + path_config.stem + ".pdf")
@@ -127,13 +124,15 @@ def table_of_contents(toc_list: list[list[str | int]], config_file: str) -> None
     toc_style.fontSize = 12
     toc_style.fontName = "Helvetica"
     toc_style.leading = 14
-    toc_list[0][1] = " <b>" + toc_list[0][1] + "</b> "  # type: ignore
-    toc_list = [[l[0], Paragraph(l[1], toc_style), l[2], l[3]] for l in toc_list]
+    toc_list[0][1] = " <b>" + str(toc_list[0][1]) + "</b> "  # type: ignore[index]
+    formatted_rows: list[list[Any]] = [
+        [row[0], Paragraph(str(row[1]), toc_style), row[2], row[3]] for row in toc_list
+    ]
 
     # add flowables to container
     elements.append(Paragraph("Table of Contents Tonuino", styles["Heading1"]))
     t = Table(
-        toc_list,
+        formatted_rows,
         colWidths=[1.2 * cm, 12 * cm, 1.5 * cm, 2.3 * cm],
         repeatRows=1,
         spaceBefore=1 * cm,

@@ -2,69 +2,102 @@
 #
 # SPDX-License-Identifier: GPL-3.0-only
 
-[tool.poetry]
+[project]
 name = "tonuino-cards-manager"
 version = "0.4.2"
 description = "Manage Tonuino RFID and SD cards by one configuration file. Easy, lightweight and feature-rich"
+authors = [{ name = "Max Mehl", email = "mail@mehl.mx" }]
+requires-python = ">=3.10,<4"
 readme = "README.md"
-authors = ["Max Mehl <mail@mehl.mx>"]
-repository = "https://github.com/mxmehl/tonuino-cards-manager"
-keywords = ["tonuino", "management", "automation"]
 license = "GPL-3.0-only"
-classifiers = [
-  "Development Status :: 5 - Production/Stable",
-  "Environment :: Console",
-  "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
-  "Intended Audience :: End Users/Desktop",
-  "Topic :: Multimedia :: Sound/Audio",
-  "Topic :: Utilities",
+keywords = [
+    "tonuino",
+    "management",
+    "automation",
 ]
-packages = [{ include = "tonuino_cards_manager" }]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Utilities",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+]
+dependencies = [
+    "mutagen>=1.47.0,<2",
+    "pyyaml>=6.0.3,<7",
+    "qrcode>=8.2,<9",
+    "wand>=0.7.0,<0.8",
+    "jsonschema>=4.25.1,<5",
+    "reportlab>=4.4.4,<5",
+]
 
-[tool.poetry.dependencies]
-python = "^3.10"
-mutagen = "^1.47.0"
-pyyaml = "^6.0.3"
-qrcode = "^8.2"
-wand = "^0.7.0"
-jsonschema = "^4.25.1"
-reportlab = "^4.4.4"
+[project.urls]
+Repository = "https://github.com/mxmehl/tonuino-cards-manager"
 
-[tool.poetry.scripts]
-tonuino-cards-manager = 'tonuino_cards_manager.main:main'
-tonuino-cover-converter = 'tonuino_cards_manager.cover:main'
+[project.scripts]
+tonuino-cards-manager = "tonuino_cards_manager.main:main"
+tonuino-cover-converter = "tonuino_cards_manager.cover:main"
 
-[tool.poetry.group.dev.dependencies]
-types-qrcode = "^7.4.0.20240921"
-pylint = "^4.0.2"
-mypy = "^1.18.2"
-black = "^26.0.0"
-pytest = "^9.0.0"
-pytest-cov = "^7.0.0"
-bump-my-version = "^1.2.4"
-h11 = "^0.16.0"
-reuse = "^6.2.0"
+[dependency-groups]
+dev = [
+    "types-qrcode>=7.4.0.20240921,<8",
+    "pytest>=9.0.0,<10",
+    "pytest-cov>=7.0.0,<8",
+    "bump-my-version>=1.2.4,<2",
+    "h11>=0.16.0,<0.17",
+    "reuse>=6.2.0,<7",
+    "ruff>=0.15.10",
+    "ty>=0.0.29",
+]
+
+[tool.uv]
+default-groups = "all"
+
+[tool.uv.build-backend]
+module-name = ["tonuino_cards_manager"]
+module-root = ""
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.11.6,<0.12.0"]
+build-backend = "uv_build"
 
-# FORMATTING settings
-[tool.isort]
-profile = "black"
-
-[tool.black]
+# FORMATTING and LINTING settings
+[tool.ruff]
 line-length = 100
 
-# MYPY settings
-[tool.mypy]
-files = ["tonuino_cards_manager/*.py"]
-disable_error_code = ["import-untyped"]
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "T",
+    "FBT",
+    "LOG015",
+    "COM812",
+    "ERA001",
+    "S310",
+    "D205",
+    "D212",
+    "PTH123",
+]
+[tool.ruff.lint.extend-per-file-ignores]
+"tests/*" = ["S101", "PLR", "PT011", "ANN001", "ANN201", "ANN002"]
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# TY settings
+[tool.ty.src]
+include = ["tonuino_cards_manager"]
 
 # Bump-My-Version
 [tool.bumpversion]
 commit = true
 tag = true
+sign_tags = true
 allow_dirty = false
 tag_name = "v{new_version}"
 
@@ -73,3 +106,16 @@ filename = "pyproject.toml"
 regex = true
 search = "^version = \"{current_version}\""
 replace = "version = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "uv.lock"
+search = """
+[[package]]
+name = "tonuino-cards-manager"
+version = "{current_version}"
+"""
+replace = """
+[[package]]
+name = "tonuino-cards-manager"
+version = "{new_version}"
+"""
