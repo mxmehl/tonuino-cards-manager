@@ -15,4 +15,4 @@ jobs:
       contents: read
     if: github.repository_owner == 'mxmehl'
     steps:
-      - uses: mxmehl/latest-release-vulnerability-status@913ecf07fa07d1278ca711791342c56c3a09fec4 # v1.2.3
+      - uses: mxmehl/latest-release-vulnerability-status@ae71b45db2a04097be8743ec616b518147057933 # v1.2.4
