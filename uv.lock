@@ -950,7 +950,7 @@ wheels = [
 
 [[package]]
 name = "tonuino-cards-manager"
-version = "0.4.3"
+version = "0.4.4"
 source = { editable = "." }
 dependencies = [
     { name = "jsonschema" },
