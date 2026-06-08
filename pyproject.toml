@@ -4,7 +4,7 @@
 
 [project]
 name = "tonuino-cards-manager"
-version = "0.4.3"
+version = "0.4.4"
 description = "Manage Tonuino RFID and SD cards by one configuration file. Easy, lightweight and feature-rich"
 authors = [{ name = "Max Mehl", email = "mail@mehl.mx" }]
 requires-python = ">=3.10,<4"
