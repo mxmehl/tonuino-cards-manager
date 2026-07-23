@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.4.5](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.4...v0.4.5) (2026-07-23)
+
+
+### ⚙️ Chores
+
+* add license-files, repository URL, and changelog URL to pyproject.toml ([#155](https://github.com/mxmehl/tonuino-cards-manager/issues/155)) ([458fdcc](https://github.com/mxmehl/tonuino-cards-manager/commit/458fdcc391f7bfd0e228decd25e6ac39cb982daf))
+* **deps:** lock file maintenance ([#158](https://github.com/mxmehl/tonuino-cards-manager/issues/158)) ([29a17e2](https://github.com/mxmehl/tonuino-cards-manager/commit/29a17e2ec06c2b215bbdaddf38ddb15645a68285))
+* **deps:** update actions/checkout action to v7.0.1 ([#161](https://github.com/mxmehl/tonuino-cards-manager/issues/161)) ([ab30ff6](https://github.com/mxmehl/tonuino-cards-manager/commit/ab30ff6523c846e7d3c1b47e92378bdd70c5a899))
+* **deps:** update actions/setup-python action to v7 ([#160](https://github.com/mxmehl/tonuino-cards-manager/issues/160)) ([d72f2cb](https://github.com/mxmehl/tonuino-cards-manager/commit/d72f2cbd03c54d997bb0d7202f6cab25f9cdf9bb))
+* **deps:** update pypa/gh-action-pypi-publish action to v1.14.1 ([#159](https://github.com/mxmehl/tonuino-cards-manager/issues/159)) ([83561b4](https://github.com/mxmehl/tonuino-cards-manager/commit/83561b410225eb03e68abdfe6f7a94ce8dd0fc8b))
+* **deps:** update zizmorcore/zizmor-action action to v0.6.0 ([#157](https://github.com/mxmehl/tonuino-cards-manager/issues/157)) ([37cf66e](https://github.com/mxmehl/tonuino-cards-manager/commit/37cf66ee863cb1075ea9673ea2ebfc65ec35f860))
+
 ## [0.4.4](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.3...v0.4.4) (2026-07-11)
 
 
