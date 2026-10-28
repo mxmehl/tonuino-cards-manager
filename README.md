@@ -40,7 +40,7 @@ The **Tonuino Cards Manager** provides an easy way to prepare and manage music c
 
 ## Installation
 
-To install the **Tonuino Cards Manager**, you need to have Python (at least version 3.10) installed. You can install the application using `pip`:
+To install the **Tonuino Cards Manager**, you need to have Python (at least version 1) installed. You can install the application using `pip`:
 
 ```
 pip3 install tonuino-cards-manager

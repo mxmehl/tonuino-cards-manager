@@ -7,7 +7,7 @@ name = "tonuino-cards-manager"
 version = "0.4.4"
 description = "Manage Tonuino RFID and SD cards by one configuration file. Easy, lightweight and feature-rich"
 authors = [{ name = "Max Mehl", email = "mail@mehl.mx" }]
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "GPL-3.0-only"
 license-files = ["LICENSE", "LICENSES/*"]
@@ -23,7 +23,6 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio",
     "Topic :: Utilities",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
