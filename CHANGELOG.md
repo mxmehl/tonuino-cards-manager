@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.6](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.5...v0.4.6) (2026-10-28)
+
+
+### ⚙️ Chores
+
+* **deps:** lock file maintenance ([#199](https://github.com/mxmehl/tonuino-cards-manager/issues/199)) ([c013e2a](https://github.com/mxmehl/tonuino-cards-manager/commit/c013e2a206453ff5515c3996268852b373a67f8e))
+
 ## [0.4.5](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.4...v0.4.5) (2026-10-28)
 
 
