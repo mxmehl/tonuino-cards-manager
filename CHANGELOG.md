@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.4.6](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.5...v0.4.6) (2026-11-06)
+
+
+### ⚙️ Chores
+
+* **deps:** lock file maintenance ([#199](https://github.com/mxmehl/tonuino-cards-manager/issues/199)) ([c013e2a](https://github.com/mxmehl/tonuino-cards-manager/commit/c013e2a206453ff5515c3996268852b373a67f8e))
+* **deps:** lock file maintenance ([#202](https://github.com/mxmehl/tonuino-cards-manager/issues/202)) ([463de38](https://github.com/mxmehl/tonuino-cards-manager/commit/463de38bf592e4c1ad952101009d4f80710ee469))
+* **deps:** update astral-sh/setup-uv action to v10.3.3 ([#201](https://github.com/mxmehl/tonuino-cards-manager/issues/201)) ([1ddd541](https://github.com/mxmehl/tonuino-cards-manager/commit/1ddd541d4188c837e68db537be2ad088ac4d46d1))
+* **deps:** update zizmorcore/zizmor-action action to v0.8.1 ([#203](https://github.com/mxmehl/tonuino-cards-manager/issues/203)) ([3a1273a](https://github.com/mxmehl/tonuino-cards-manager/commit/3a1273a6bb8ec6f55eefe87228a669413a207f33))
+
 ## [0.4.5](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.4...v0.4.5) (2026-10-28)
 
 
