@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.5.0](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.5...v0.5.0) (2026-11-27)
+
+
+### 🚀 New Features
+
+* add support for Python 3.15 ([#206](https://github.com/mxmehl/tonuino-cards-manager/issues/206)) ([7298a80](https://github.com/mxmehl/tonuino-cards-manager/commit/7298a8016d01f3a89d1619d948aedd35026de02f))
+
+
+### ⚙️ Chores
+
+* **deps:** lock file maintenance ([#199](https://github.com/mxmehl/tonuino-cards-manager/issues/199)) ([c013e2a](https://github.com/mxmehl/tonuino-cards-manager/commit/c013e2a206453ff5515c3996268852b373a67f8e))
+* **deps:** lock file maintenance ([#202](https://github.com/mxmehl/tonuino-cards-manager/issues/202)) ([463de38](https://github.com/mxmehl/tonuino-cards-manager/commit/463de38bf592e4c1ad952101009d4f80710ee469))
+* **deps:** lock file maintenance ([#204](https://github.com/mxmehl/tonuino-cards-manager/issues/204)) ([42ed9b3](https://github.com/mxmehl/tonuino-cards-manager/commit/42ed9b358f6984569bd975424f5a87b3b5abfec6))
+* **deps:** lock file maintenance ([#205](https://github.com/mxmehl/tonuino-cards-manager/issues/205)) ([80394c8](https://github.com/mxmehl/tonuino-cards-manager/commit/80394c8c4969a8accd6dff7635d562a17f6a50a9))
+* **deps:** lock file maintenance ([#208](https://github.com/mxmehl/tonuino-cards-manager/issues/208)) ([ddb221a](https://github.com/mxmehl/tonuino-cards-manager/commit/ddb221abb8b0dc4766fd473d421b07ee6a4baeb5))
+* **deps:** update actions/create-github-app-token action to v3.4.0 ([#207](https://github.com/mxmehl/tonuino-cards-manager/issues/207)) ([be12792](https://github.com/mxmehl/tonuino-cards-manager/commit/be12792ce523669c608760c62c30f44e594bb01f))
+* **deps:** update astral-sh/setup-uv action to v10.3.3 ([#201](https://github.com/mxmehl/tonuino-cards-manager/issues/201)) ([1ddd541](https://github.com/mxmehl/tonuino-cards-manager/commit/1ddd541d4188c837e68db537be2ad088ac4d46d1))
+* **deps:** update astral-sh/setup-uv action to v10.4.0 ([#209](https://github.com/mxmehl/tonuino-cards-manager/issues/209)) ([20a50ab](https://github.com/mxmehl/tonuino-cards-manager/commit/20a50ab80de57dedf42fba953f19516832761166))
+* **deps:** update zizmorcore/zizmor-action action to v0.8.1 ([#203](https://github.com/mxmehl/tonuino-cards-manager/issues/203)) ([3a1273a](https://github.com/mxmehl/tonuino-cards-manager/commit/3a1273a6bb8ec6f55eefe87228a669413a207f33))
+* **deps:** update zizmorcore/zizmor-action action to v0.9.1 ([#210](https://github.com/mxmehl/tonuino-cards-manager/issues/210)) ([8c118c4](https://github.com/mxmehl/tonuino-cards-manager/commit/8c118c425d5b305f506423f715596bc74145702e))
+* **deps:** update zizmorcore/zizmor-action action to v0.9.2 ([#211](https://github.com/mxmehl/tonuino-cards-manager/issues/211)) ([37cb52a](https://github.com/mxmehl/tonuino-cards-manager/commit/37cb52aed5b859edbff79ed43e627950cdbf1996))
+
 ## [0.4.5](https://github.com/mxmehl/tonuino-cards-manager/compare/v0.4.4...v0.4.5) (2026-10-28)
 
 
